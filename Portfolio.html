@@ -450,6 +450,29 @@ header.scrolled{box-shadow:0 8px 28px var(--sh)}
 .pct strong{display:block;font-size:13px;line-height:1.3;font-weight:600}
 .pct small{color:var(--mut);font-size:11.5px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}}
+/* ===== 11. ASSISTANT (capacités avancées) : graphiques, frise, textes à copier, quiz, offre ===== */
+.cr{display:flex;flex-wrap:wrap;margin:6px 0 4px}
+.bub .sk{font-size:12px;margin:0 4px 6px 0}
+.ci svg{width:16px;height:16px;vertical-align:-3px;margin-right:4px}
+.chart{display:grid;gap:7px;margin:8px 0}
+.cr2{display:grid;grid-template-columns:104px 1fr 30px;align-items:center;gap:8px;font-size:12.5px}
+.cl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cb{height:10px;border-radius:99px;background:var(--ac2);overflow:hidden}
+.cb i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#0284c7,#38bdf8);transform-origin:left;animation:grow .8s ease backwards}
+.meter{height:12px;border-radius:99px;background:var(--ac2);overflow:hidden;margin:10px 0 6px}
+.meter i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#0284c7,#38bdf8);transform-origin:left;animation:grow .9s ease backwards}
+@keyframes grow{from{transform:scaleX(0)}}
+.draft{margin:8px 0;padding:10px 12px;border-left:3px solid var(--ac);background:var(--bg);border-radius:0 10px 10px 0;font-size:13px}
+.abtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.abtn button{font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:99px;border:1px solid var(--bd);background:var(--card);color:var(--ac);cursor:pointer}
+.abtn button:hover{border-color:var(--ac);background:var(--ac2)}
+.tlm{position:relative;margin:10px 0 8px 6px;padding-left:16px;border-left:2px solid var(--bd);display:grid;gap:12px}
+.tlm>div{position:relative;font-size:13px}
+.tlm>div::before{content:"";position:absolute;left:-23px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 3px var(--card)}
+.tlm small{display:block;color:var(--mut);font-size:11.5px}
+.ennote{color:var(--mut);font-size:12px}
+.qb.qz{width:100%;justify-content:flex-start;border-radius:12px}
+.rd.on{color:var(--ac);opacity:1}
 </style>
 </head>
 <body>
@@ -536,7 +559,7 @@ function figs(p){var im=IMG[p[0]];if(!im)return "";return '<div class="figs">'+i
 /**
  * Icônes d'interface (Material Design Icons) : clé -> contenu SVG. Utilisées par ico().
  */
-var UI={"sparkle":"<path fill=\"currentColor\" d=\"m19 1l-1.26 2.75L15 5l2.74 1.26L19 9l1.25-2.74L23 5l-2.75-1.25M9 4L6.5 9.5L1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5M19 15l-1.26 2.74L15 19l2.74 1.25L19 23l1.25-2.75L23 19l-2.75-1.26\"/>","send":"<path fill=\"currentColor\" d=\"m2 21l21-9L2 3v7l15 2l-15 2z\"/>","close":"<path fill=\"currentColor\" d=\"M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z\"/>","pin":"<path fill=\"currentColor\" d=\"M12 11.5A2.5 2.5 0 0 1 9.5 9A2.5 2.5 0 0 1 12 6.5A2.5 2.5 0 0 1 14.5 9a2.5 2.5 0 0 1-2.5 2.5M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7\"/>","school":"<path fill=\"currentColor\" d=\"M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9zm6.82 6L12 12.72L5.18 9L12 5.28zM17 16l-5 2.72L7 16v-3.73L12 15l5-2.73z\"/>","brief":"<path fill=\"currentColor\" d=\"M20 6c.58 0 1.05.2 1.42.59c.38.41.58.86.58 1.41v11c0 .55-.2 1-.58 1.41c-.37.39-.84.59-1.42.59H4c-.58 0-1.05-.2-1.42-.59C2.2 20 2 19.55 2 19V8c0-.55.2-1 .58-1.41C2.95 6.2 3.42 6 4 6h4V4c0-.58.2-1.05.58-1.42C8.95 2.2 9.42 2 10 2h4c.58 0 1.05.2 1.42.58c.38.37.58.84.58 1.42v2zM4 8v11h16V8zm10-2V4h-4v2z\"/>","moon":"<path fill=\"currentColor\" d=\"m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3zm3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31\"/>","sun":"<path fill=\"currentColor\" d=\"m3.55 19.09l1.41 1.41l1.8-1.79l-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6s6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71l1.8 1.79l1.41-1.41l-1.79-1.8M20.45 5l-1.41-1.4l-1.8 1.79l1.42 1.42M13 1h-2v3h2M6.76 5.39L4.96 3.6L3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2\"/>","menu":"<path fill=\"currentColor\" d=\"M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z\"/>","up":"<path fill=\"currentColor\" d=\"M13 20h-2V8l-5.5 5.5l-1.42-1.42L12 4.16l7.92 7.92l-1.42 1.42L13 8z\"/>","right":"<path fill=\"currentColor\" d=\"M4 11v2h12l-5.5 5.5l1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5L16 11z\"/>","refresh":"<path fill=\"currentColor\" d=\"M17.65 6.35A7.96 7.96 0 0 0 12 4a8 8 0 0 0-8 8a8 8 0 0 0 8 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18a6 6 0 0 1-6-6a6 6 0 0 1 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z\"/>","expand":"<path fill=\"currentColor\" d=\"M10 21v-2H6.41l4.5-4.5l-1.41-1.41l-4.5 4.5V14H3v7zm4.5-10.09l4.5-4.5V10h2V3h-7v2h3.59l-4.5 4.5z\"/>","shrink":"<path fill=\"currentColor\" d=\"M19.5 3.09L15 7.59V4h-2v7h7V9h-3.59l4.5-4.5zM4 13v2h3.59l-4.5 4.5l1.41 1.41l4.5-4.5V20h2v-7z\"/>","copy":"<path fill=\"currentColor\" d=\"M19 21H8V7h11m0-2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2m-3-4H4a2 2 0 0 0-2 2v14h2V3h12z\"/>","mic":"<path fill=\"currentColor\" d=\"M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3m7 9c0 3.53-2.61 6.44-6 6.93V21h-2v-3.07c-3.39-.49-6-3.4-6-6.93h2a5 5 0 0 0 5 5a5 5 0 0 0 5-5z\"/>","linkedin":"<path fill=\"currentColor\" d=\"M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93zM6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37z\"/>","code":"<path fill=\"currentColor\" d=\"M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2a2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2a2 2 0 0 1-2-2V5h-2V3z\"/>","stats":"<path fill=\"currentColor\" d=\"M9.96 11.31C10.82 8.1 11.5 6 13 6s2.18 2.1 3.04 5.31C17 14.92 18.1 19 22 19v-2c-2.2 0-3-2.46-4.03-6.2C17.08 7.46 16.15 4 13 4s-4.08 3.46-4.97 6.8C7.03 14.54 6.2 17 4 17V2H2v20h20v-2H4v-1c3.9 0 5-4.08 5.96-7.69\"/>","db":"<path fill=\"currentColor\" d=\"M12 3C7.58 3 4 4.79 4 7v10c0 2.21 3.59 4 8 4s8-1.79 8-4V7c0-2.21-3.58-4-8-4m6 14c0 .5-2.13 2-6 2s-6-1.5-6-2v-2.23c1.61.78 3.72 1.23 6 1.23s4.39-.45 6-1.23zm0-4.55c-1.3.95-3.58 1.55-6 1.55s-4.7-.6-6-1.55V9.64c1.47.83 3.61 1.36 6 1.36s4.53-.53 6-1.36zM12 9C8.13 9 6 7.5 6 7s2.13-2 6-2s6 1.5 6 2s-2.13 2-6 2\"/>","git":"<path fill=\"currentColor\" d=\"M13 14c-3.36 0-4.46 1.35-4.82 2.24C9.25 16.7 10 17.76 10 19a3 3 0 0 1-3 3a3 3 0 0 1-3-3c0-1.31.83-2.42 2-2.83V7.83A2.99 2.99 0 0 1 4 5a3 3 0 0 1 3-3a3 3 0 0 1 3 3c0 1.31-.83 2.42-2 2.83v5.29c.88-.65 2.16-1.12 4-1.12c2.67 0 3.56-1.34 3.85-2.23A3.01 3.01 0 0 1 14 7a3 3 0 0 1 3-3a3 3 0 0 1 3 3c0 1.34-.88 2.5-2.09 2.86C17.65 11.29 16.68 14 13 14m-6 4a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1a1 1 0 0 0-1-1M7 4a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1a1 1 0 0 0-1-1m10 2a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1a1 1 0 0 0-1-1\"/>","chart":"<path fill=\"currentColor\" d=\"M9 17H7v-7h2zm4 0h-2V7h2zm4 0h-2v-4h2zm2 2H5V5h14v14.1M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2\"/>","auto":"<path fill=\"currentColor\" d=\"M11.7 20h-.4l-.4-2.6c-1.2-.2-2.2-.9-3-1.8l-2.4 1l-.8-1.3l2.1-1.6q-.6-1.8 0-3.6L4.7 8.7l.8-1.3l2.4 1q1.2-1.35 3-1.8l.3-2.6h1.5l.4 2.6c1.2.2 2.3.9 3 1.8l2.4-1l.8 1.3l-2.1 1.5q.3.9.3 1.8h.5c.5 0 1 .1 1.5.2V12l-.1-1l2.1-1.6c.2-.2.2-.4.1-.6l-2-3.5c-.1-.3-.3-.3-.6-.3l-2.5 1c-.5-.4-1.1-.7-1.7-1l-.4-2.7c.1-.1-.2-.3-.4-.3h-4c-.2 0-.5.2-.5.4l-.4 2.7c-.6.2-1.1.6-1.7.9L5 5c-.3 0-.5 0-.7.3l-2 3.5c-.1.2 0 .4.2.6L4.6 11l-.1 1l.1 1l-2.1 1.7c-.2.2-.2.4-.1.6l2 3.5c.1.2.3.2.6.2l2.5-1c.5.4 1.1.7 1.7 1l.4 2.7c0 .2.2.4.5.4h2.5c-.5-.7-.7-1.4-.9-2.1m4.3-7.7V12c0-2.2-1.8-4-4-4s-4 1.8-4 4s1.8 4 4 4c.7-1.7 2.2-3.1 4-3.7m-6-.3c0-1.1.9-2 2-2s2 .9 2 2s-.9 2-2 2s-2-.9-2-2m8 2.5V13l-2.2 2.2l2.2 2.2V16c1.4 0 2.5 1.1 2.5 2.5c0 .4-.1.8-.3 1.1l1.1 1.1c1.2-1.8.7-4.3-1.1-5.5c-.6-.5-1.4-.7-2.2-.7m0 6.5c-1.4 0-2.5-1.1-2.5-2.5c0-.4.1-.8.3-1.1l-1.1-1.1c-1.2 1.8-.7 4.3 1.1 5.5c.7.4 1.4.7 2.2.7V24l2.2-2.2l-2.2-2.3z\"/>","map":"<path fill=\"currentColor\" d=\"m20.5 3l-.16.03L15 5.1L9 3L3.36 4.9c-.21.07-.36.25-.36.48V20.5a.5.5 0 0 0 .5.5l.16-.03L9 18.9l6 2.1l5.64-1.9c.21-.07.36-.25.36-.48V3.5a.5.5 0 0 0-.5-.5M10 5.47l4 1.4v11.66l-4-1.4zm-5 .99l3-1.01v11.7l-3 1.16zm14 11.08l-3 1.01V6.86l3-1.16z\"/>","doc":"<path fill=\"currentColor\" d=\"M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2h7v5h5v11H6zm2 8v2h8v-2zm0 4v2h5v-2z\"/>","check":"<path fill=\"currentColor\" d=\"M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10s10-4.5 10-10S17.5 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8m4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4l8-8z\"/>","user":"<path fill=\"currentColor\" d=\"M12 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 2a2 2 0 0 0-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2m0 7c2.67 0 8 1.33 8 4v3H4v-3c0-2.67 5.33-4 8-4m0 1.9c-2.97 0-6.1 1.46-6.1 2.1v1.1h12.2V17c0-.64-3.13-2.1-6.1-2.1\"/>","chat":"<path fill=\"currentColor\" d=\"M20 2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2zM4 4v13.17L5.17 16H20V4zm2 3h12v2H6zm0 4h9v2H6z\"/>","link":"<path fill=\"currentColor\" d=\"M14 3v2h3.59l-9.83 9.83l1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2z\"/>","folder":"<path fill=\"currentColor\" d=\"M20 18H4V8h16m0-2h-8l-2-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2\"/>","lightbulb":"<path fill=\"currentColor\" d=\"M20 11h3v2h-3zM1 11h3v2H1zM13 1v3h-2V1zM4.92 3.5l2.13 2.14l-1.42 1.41L3.5 4.93zm12.03 2.13l2.12-2.13l1.43 1.43l-2.13 2.12zM12 6a6 6 0 0 1 6 6c0 2.22-1.21 4.16-3 5.2V19a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6 6 0 0 1 6-6m2 15v1a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1zm-3-3h2v-2.13c1.73-.44 3-2.01 3-3.87a4 4 0 0 0-4-4a4 4 0 0 0-4 4c0 1.86 1.27 3.43 3 3.87z\"/>","compass":"<path fill=\"currentColor\" d=\"m7 17l3.2-6.8L17 7l-3.2 6.8zm5-5.9a.9.9 0 0 0-.9.9a.9.9 0 0 0 .9.9a.9.9 0 0 0 .9-.9a.9.9 0 0 0-.9-.9M12 2a10 10 0 0 1 10 10a10 10 0 0 1-10 10A10 10 0 0 1 2 12A10 10 0 0 1 12 2m0 2a8 8 0 0 0-8 8a8 8 0 0 0 8 8a8 8 0 0 0 8-8a8 8 0 0 0-8-8\"/>","target":"<path fill=\"currentColor\" d=\"M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10c0-1.16-.21-2.31-.61-3.39l-1.6 1.6c.14.59.21 1.19.21 1.79a8 8 0 0 1-8 8a8 8 0 0 1-8-8a8 8 0 0 1 8-8c.6 0 1.2.07 1.79.21L15.4 2.6C14.31 2.21 13.16 2 12 2m7 0l-4 4v1.5l-2.55 2.55C12.3 10 12.15 10 12 10a2 2 0 0 0-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2c0-.15 0-.3-.05-.45L16.5 9H18l4-4h-3zm-7 4a6 6 0 0 0-6 6a6 6 0 0 0 6 6a6 6 0 0 0 6-6h-2a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4z\"/>","group":"<path fill=\"currentColor\" d=\"M12 5a3.5 3.5 0 0 0-3.5 3.5A3.5 3.5 0 0 0 12 12a3.5 3.5 0 0 0 3.5-3.5A3.5 3.5 0 0 0 12 5m0 2a1.5 1.5 0 0 1 1.5 1.5A1.5 1.5 0 0 1 12 10a1.5 1.5 0 0 1-1.5-1.5A1.5 1.5 0 0 1 12 7M5.5 8A2.5 2.5 0 0 0 3 10.5c0 .94.53 1.75 1.29 2.18c.36.2.77.32 1.21.32s.85-.12 1.21-.32c.37-.21.68-.51.91-.87A5.42 5.42 0 0 1 6.5 8.5v-.28c-.3-.14-.64-.22-1-.22m13 0c-.36 0-.7.08-1 .22v.28c0 1.2-.39 2.36-1.12 3.31c.12.19.25.34.4.49a2.48 2.48 0 0 0 1.72.7c.44 0 .85-.12 1.21-.32c.76-.43 1.29-1.24 1.29-2.18A2.5 2.5 0 0 0 18.5 8M12 14c-2.34 0-7 1.17-7 3.5V19h14v-1.5c0-2.33-4.66-3.5-7-3.5m-7.29.55C2.78 14.78 0 15.76 0 17.5V19h3v-1.93c0-1.01.69-1.85 1.71-2.52m14.58 0c1.02.67 1.71 1.51 1.71 2.52V19h3v-1.5c0-1.74-2.78-2.72-4.71-2.95M12 16c1.53 0 3.24.5 4.23 1H7.77c.99-.5 2.7-1 4.23-1\"/>","download":"<path fill=\"currentColor\" d=\"M13 5v6h1.17L12 13.17L9.83 11H11V5zm2-2H9v6H5l7 7l7-7h-4zm4 15H5v2h14z\"/>","left":"<path fill=\"currentColor\" d=\"M20 11v2H8l5.5 5.5l-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5L8 11z\"/>","cal":"<path fill=\"currentColor\" d=\"M7 11h2v2H7zm14-6v14c0 1.11-.89 2-2 2H5a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2M5 7h14V5H5zm14 12V9H5v10zm-4-6v-2h2v2zm-4 0v-2h2v2zm-4 2h2v2H7zm8 2v-2h2v2zm-4 0v-2h2v2z\"/>","layers":"<path fill=\"currentColor\" d=\"m12 18.54l7.37-5.74L21 14.07l-9 7l-9-7l1.62-1.26zM12 16L3 9l9-7l9 7zm0-11.47L6.26 9L12 13.47L17.74 9z\"/>","star":"<path fill=\"currentColor\" d=\"m12 6.7l1.45 3.85L17.3 12l-3.85 1.45L12 17.3l-1.45-3.85L6.7 12l3.85-1.45zM12 1L9 9l-8 3l8 3l3 8l3-8l8-3l-8-3z\"/>"};
+var UI={"sparkle":"<path fill=\"currentColor\" d=\"m19 1l-1.26 2.75L15 5l2.74 1.26L19 9l1.25-2.74L23 5l-2.75-1.25M9 4L6.5 9.5L1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5M19 15l-1.26 2.74L15 19l2.74 1.25L19 23l1.25-2.75L23 19l-2.75-1.26\"/>","send":"<path fill=\"currentColor\" d=\"m2 21l21-9L2 3v7l15 2l-15 2z\"/>","close":"<path fill=\"currentColor\" d=\"M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z\"/>","pin":"<path fill=\"currentColor\" d=\"M12 11.5A2.5 2.5 0 0 1 9.5 9A2.5 2.5 0 0 1 12 6.5A2.5 2.5 0 0 1 14.5 9a2.5 2.5 0 0 1-2.5 2.5M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7\"/>","school":"<path fill=\"currentColor\" d=\"M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9zm6.82 6L12 12.72L5.18 9L12 5.28zM17 16l-5 2.72L7 16v-3.73L12 15l5-2.73z\"/>","brief":"<path fill=\"currentColor\" d=\"M20 6c.58 0 1.05.2 1.42.59c.38.41.58.86.58 1.41v11c0 .55-.2 1-.58 1.41c-.37.39-.84.59-1.42.59H4c-.58 0-1.05-.2-1.42-.59C2.2 20 2 19.55 2 19V8c0-.55.2-1 .58-1.41C2.95 6.2 3.42 6 4 6h4V4c0-.58.2-1.05.58-1.42C8.95 2.2 9.42 2 10 2h4c.58 0 1.05.2 1.42.58c.38.37.58.84.58 1.42v2zM4 8v11h16V8zm10-2V4h-4v2z\"/>","moon":"<path fill=\"currentColor\" d=\"m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3zm3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31\"/>","sun":"<path fill=\"currentColor\" d=\"m3.55 19.09l1.41 1.41l1.8-1.79l-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6s6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71l1.8 1.79l1.41-1.41l-1.79-1.8M20.45 5l-1.41-1.4l-1.8 1.79l1.42 1.42M13 1h-2v3h2M6.76 5.39L4.96 3.6L3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2\"/>","menu":"<path fill=\"currentColor\" d=\"M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z\"/>","up":"<path fill=\"currentColor\" d=\"M13 20h-2V8l-5.5 5.5l-1.42-1.42L12 4.16l7.92 7.92l-1.42 1.42L13 8z\"/>","right":"<path fill=\"currentColor\" d=\"M4 11v2h12l-5.5 5.5l1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5L16 11z\"/>","refresh":"<path fill=\"currentColor\" d=\"M17.65 6.35A7.96 7.96 0 0 0 12 4a8 8 0 0 0-8 8a8 8 0 0 0 8 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18a6 6 0 0 1-6-6a6 6 0 0 1 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z\"/>","expand":"<path fill=\"currentColor\" d=\"M10 21v-2H6.41l4.5-4.5l-1.41-1.41l-4.5 4.5V14H3v7zm4.5-10.09l4.5-4.5V10h2V3h-7v2h3.59l-4.5 4.5z\"/>","shrink":"<path fill=\"currentColor\" d=\"M19.5 3.09L15 7.59V4h-2v7h7V9h-3.59l4.5-4.5zM4 13v2h3.59l-4.5 4.5l1.41 1.41l4.5-4.5V20h2v-7z\"/>","copy":"<path fill=\"currentColor\" d=\"M19 21H8V7h11m0-2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2m-3-4H4a2 2 0 0 0-2 2v14h2V3h12z\"/>","mic":"<path fill=\"currentColor\" d=\"M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3m7 9c0 3.53-2.61 6.44-6 6.93V21h-2v-3.07c-3.39-.49-6-3.4-6-6.93h2a5 5 0 0 0 5 5a5 5 0 0 0 5-5z\"/>","linkedin":"<path fill=\"currentColor\" d=\"M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93zM6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37z\"/>","code":"<path fill=\"currentColor\" d=\"M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2a2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2a2 2 0 0 1-2-2V5h-2V3z\"/>","stats":"<path fill=\"currentColor\" d=\"M9.96 11.31C10.82 8.1 11.5 6 13 6s2.18 2.1 3.04 5.31C17 14.92 18.1 19 22 19v-2c-2.2 0-3-2.46-4.03-6.2C17.08 7.46 16.15 4 13 4s-4.08 3.46-4.97 6.8C7.03 14.54 6.2 17 4 17V2H2v20h20v-2H4v-1c3.9 0 5-4.08 5.96-7.69\"/>","db":"<path fill=\"currentColor\" d=\"M12 3C7.58 3 4 4.79 4 7v10c0 2.21 3.59 4 8 4s8-1.79 8-4V7c0-2.21-3.58-4-8-4m6 14c0 .5-2.13 2-6 2s-6-1.5-6-2v-2.23c1.61.78 3.72 1.23 6 1.23s4.39-.45 6-1.23zm0-4.55c-1.3.95-3.58 1.55-6 1.55s-4.7-.6-6-1.55V9.64c1.47.83 3.61 1.36 6 1.36s4.53-.53 6-1.36zM12 9C8.13 9 6 7.5 6 7s2.13-2 6-2s6 1.5 6 2s-2.13 2-6 2\"/>","git":"<path fill=\"currentColor\" d=\"M13 14c-3.36 0-4.46 1.35-4.82 2.24C9.25 16.7 10 17.76 10 19a3 3 0 0 1-3 3a3 3 0 0 1-3-3c0-1.31.83-2.42 2-2.83V7.83A2.99 2.99 0 0 1 4 5a3 3 0 0 1 3-3a3 3 0 0 1 3 3c0 1.31-.83 2.42-2 2.83v5.29c.88-.65 2.16-1.12 4-1.12c2.67 0 3.56-1.34 3.85-2.23A3.01 3.01 0 0 1 14 7a3 3 0 0 1 3-3a3 3 0 0 1 3 3c0 1.34-.88 2.5-2.09 2.86C17.65 11.29 16.68 14 13 14m-6 4a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1a1 1 0 0 0-1-1M7 4a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1a1 1 0 0 0-1-1m10 2a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1a1 1 0 0 0-1-1\"/>","chart":"<path fill=\"currentColor\" d=\"M9 17H7v-7h2zm4 0h-2V7h2zm4 0h-2v-4h2zm2 2H5V5h14v14.1M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2\"/>","auto":"<path fill=\"currentColor\" d=\"M11.7 20h-.4l-.4-2.6c-1.2-.2-2.2-.9-3-1.8l-2.4 1l-.8-1.3l2.1-1.6q-.6-1.8 0-3.6L4.7 8.7l.8-1.3l2.4 1q1.2-1.35 3-1.8l.3-2.6h1.5l.4 2.6c1.2.2 2.3.9 3 1.8l2.4-1l.8 1.3l-2.1 1.5q.3.9.3 1.8h.5c.5 0 1 .1 1.5.2V12l-.1-1l2.1-1.6c.2-.2.2-.4.1-.6l-2-3.5c-.1-.3-.3-.3-.6-.3l-2.5 1c-.5-.4-1.1-.7-1.7-1l-.4-2.7c.1-.1-.2-.3-.4-.3h-4c-.2 0-.5.2-.5.4l-.4 2.7c-.6.2-1.1.6-1.7.9L5 5c-.3 0-.5 0-.7.3l-2 3.5c-.1.2 0 .4.2.6L4.6 11l-.1 1l.1 1l-2.1 1.7c-.2.2-.2.4-.1.6l2 3.5c.1.2.3.2.6.2l2.5-1c.5.4 1.1.7 1.7 1l.4 2.7c0 .2.2.4.5.4h2.5c-.5-.7-.7-1.4-.9-2.1m4.3-7.7V12c0-2.2-1.8-4-4-4s-4 1.8-4 4s1.8 4 4 4c.7-1.7 2.2-3.1 4-3.7m-6-.3c0-1.1.9-2 2-2s2 .9 2 2s-.9 2-2 2s-2-.9-2-2m8 2.5V13l-2.2 2.2l2.2 2.2V16c1.4 0 2.5 1.1 2.5 2.5c0 .4-.1.8-.3 1.1l1.1 1.1c1.2-1.8.7-4.3-1.1-5.5c-.6-.5-1.4-.7-2.2-.7m0 6.5c-1.4 0-2.5-1.1-2.5-2.5c0-.4.1-.8.3-1.1l-1.1-1.1c-1.2 1.8-.7 4.3 1.1 5.5c.7.4 1.4.7 2.2.7V24l2.2-2.2l-2.2-2.3z\"/>","map":"<path fill=\"currentColor\" d=\"m20.5 3l-.16.03L15 5.1L9 3L3.36 4.9c-.21.07-.36.25-.36.48V20.5a.5.5 0 0 0 .5.5l.16-.03L9 18.9l6 2.1l5.64-1.9c.21-.07.36-.25.36-.48V3.5a.5.5 0 0 0-.5-.5M10 5.47l4 1.4v11.66l-4-1.4zm-5 .99l3-1.01v11.7l-3 1.16zm14 11.08l-3 1.01V6.86l3-1.16z\"/>","doc":"<path fill=\"currentColor\" d=\"M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2h7v5h5v11H6zm2 8v2h8v-2zm0 4v2h5v-2z\"/>","check":"<path fill=\"currentColor\" d=\"M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10s10-4.5 10-10S17.5 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8m4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4l8-8z\"/>","user":"<path fill=\"currentColor\" d=\"M12 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 2a2 2 0 0 0-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2m0 7c2.67 0 8 1.33 8 4v3H4v-3c0-2.67 5.33-4 8-4m0 1.9c-2.97 0-6.1 1.46-6.1 2.1v1.1h12.2V17c0-.64-3.13-2.1-6.1-2.1\"/>","chat":"<path fill=\"currentColor\" d=\"M20 2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2zM4 4v13.17L5.17 16H20V4zm2 3h12v2H6zm0 4h9v2H6z\"/>","link":"<path fill=\"currentColor\" d=\"M14 3v2h3.59l-9.83 9.83l1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2z\"/>","folder":"<path fill=\"currentColor\" d=\"M20 18H4V8h16m0-2h-8l-2-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2\"/>","lightbulb":"<path fill=\"currentColor\" d=\"M20 11h3v2h-3zM1 11h3v2H1zM13 1v3h-2V1zM4.92 3.5l2.13 2.14l-1.42 1.41L3.5 4.93zm12.03 2.13l2.12-2.13l1.43 1.43l-2.13 2.12zM12 6a6 6 0 0 1 6 6c0 2.22-1.21 4.16-3 5.2V19a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6 6 0 0 1 6-6m2 15v1a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1zm-3-3h2v-2.13c1.73-.44 3-2.01 3-3.87a4 4 0 0 0-4-4a4 4 0 0 0-4 4c0 1.86 1.27 3.43 3 3.87z\"/>","compass":"<path fill=\"currentColor\" d=\"m7 17l3.2-6.8L17 7l-3.2 6.8zm5-5.9a.9.9 0 0 0-.9.9a.9.9 0 0 0 .9.9a.9.9 0 0 0 .9-.9a.9.9 0 0 0-.9-.9M12 2a10 10 0 0 1 10 10a10 10 0 0 1-10 10A10 10 0 0 1 2 12A10 10 0 0 1 12 2m0 2a8 8 0 0 0-8 8a8 8 0 0 0 8 8a8 8 0 0 0 8-8a8 8 0 0 0-8-8\"/>","target":"<path fill=\"currentColor\" d=\"M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10c0-1.16-.21-2.31-.61-3.39l-1.6 1.6c.14.59.21 1.19.21 1.79a8 8 0 0 1-8 8a8 8 0 0 1-8-8a8 8 0 0 1 8-8c.6 0 1.2.07 1.79.21L15.4 2.6C14.31 2.21 13.16 2 12 2m7 0l-4 4v1.5l-2.55 2.55C12.3 10 12.15 10 12 10a2 2 0 0 0-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2c0-.15 0-.3-.05-.45L16.5 9H18l4-4h-3zm-7 4a6 6 0 0 0-6 6a6 6 0 0 0 6 6a6 6 0 0 0 6-6h-2a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4z\"/>","group":"<path fill=\"currentColor\" d=\"M12 5a3.5 3.5 0 0 0-3.5 3.5A3.5 3.5 0 0 0 12 12a3.5 3.5 0 0 0 3.5-3.5A3.5 3.5 0 0 0 12 5m0 2a1.5 1.5 0 0 1 1.5 1.5A1.5 1.5 0 0 1 12 10a1.5 1.5 0 0 1-1.5-1.5A1.5 1.5 0 0 1 12 7M5.5 8A2.5 2.5 0 0 0 3 10.5c0 .94.53 1.75 1.29 2.18c.36.2.77.32 1.21.32s.85-.12 1.21-.32c.37-.21.68-.51.91-.87A5.42 5.42 0 0 1 6.5 8.5v-.28c-.3-.14-.64-.22-1-.22m13 0c-.36 0-.7.08-1 .22v.28c0 1.2-.39 2.36-1.12 3.31c.12.19.25.34.4.49a2.48 2.48 0 0 0 1.72.7c.44 0 .85-.12 1.21-.32c.76-.43 1.29-1.24 1.29-2.18A2.5 2.5 0 0 0 18.5 8M12 14c-2.34 0-7 1.17-7 3.5V19h14v-1.5c0-2.33-4.66-3.5-7-3.5m-7.29.55C2.78 14.78 0 15.76 0 17.5V19h3v-1.93c0-1.01.69-1.85 1.71-2.52m14.58 0c1.02.67 1.71 1.51 1.71 2.52V19h3v-1.5c0-1.74-2.78-2.72-4.71-2.95M12 16c1.53 0 3.24.5 4.23 1H7.77c.99-.5 2.7-1 4.23-1\"/>","download":"<path fill=\"currentColor\" d=\"M13 5v6h1.17L12 13.17L9.83 11H11V5zm2-2H9v6H5l7 7l7-7h-4zm4 15H5v2h14z\"/>","left":"<path fill=\"currentColor\" d=\"M20 11v2H8l5.5 5.5l-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5L8 11z\"/>","cal":"<path fill=\"currentColor\" d=\"M7 11h2v2H7zm14-6v14c0 1.11-.89 2-2 2H5a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2M5 7h14V5H5zm14 12V9H5v10zm-4-6v-2h2v2zm-4 0v-2h2v2zm-4 2h2v2H7zm8 2v-2h2v2zm-4 0v-2h2v2z\"/>","layers":"<path fill=\"currentColor\" d=\"m12 18.54l7.37-5.74L21 14.07l-9 7l-9-7l1.62-1.26zM12 16L3 9l9-7l9 7zm0-11.47L6.26 9L12 13.47L17.74 9z\"/>","star":"<path fill=\"currentColor\" d=\"m12 6.7l1.45 3.85L17.3 12l-3.85 1.45L12 17.3l-1.45-3.85L6.7 12l3.85-1.45zM12 1L9 9l-8 3l8 3l3 8l3-8l8-3l-8-3z\"/>","volume":"<path fill=\"currentColor\" d=\"M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.84-5 6.7v2.07c4-.91 7-4.49 7-8.77s-3-7.86-7-8.77M16.5 12c0-1.77-1-3.29-2.5-4.03V16c1.5-.71 2.5-2.24 2.5-4M3 9v6h4l5 5V4L7 9z\"/>"};
 /**
  * Compétences regroupées par domaine. Chaque élément est une chaîne «
  * Libellé|logo|description|mots-clés » : logo = clé de IC (vide si aucun), mots-clés (séparés par
@@ -822,7 +845,7 @@ var CATR=[/\b(programmation|coder|coding|developpement|scripting|langages)\b/,/\
 /**
  * Technologies absentes du site : permet de répondre honnêtement qu'elles ne sont pas listées.
  */
-var UNK={java:1,"c++":1,"c#":1,php:1,tableau:1,tensorflow:1,pytorch:1,keras:1,spark:1,hadoop:1,scala:1,julia:1,matlab:1,stata:1,spss:1,docker:1,kubernetes:1,aws:1,azure:1,gcp:1,bigquery:1,dbt:1,airflow:1,looker:1,mongodb:1,postgresql:1,postgres:1,oracle:1,react:1,angular:1,vue:1,node:1,typescript:1,sklearn:1,scikit:1,nlp:1,llm:1,chatgpt:1,ruby:1,swift:1,kotlin:1,rust:1,golang:1};
+var UNK={java:1,"c++":1,"c#":1,php:1,tableau:1,tensorflow:1,pytorch:1,keras:1,spark:1,hadoop:1,scala:1,julia:1,matlab:1,stata:1,spss:1,docker:1,kubernetes:1,aws:1,azure:1,gcp:1,bigquery:1,dbt:1,airflow:1,looker:1,mongodb:1,postgresql:1,postgres:1,oracle:1,react:1,angular:1,node:1,typescript:1,sklearn:1,scikit:1,nlp:1,llm:1,chatgpt:1,ruby:1,swift:1,kotlin:1,rust:1,golang:1};
 /**
  * Expressions absentes du site (machine learning, big data...).
  */
@@ -899,7 +922,7 @@ SK.forEach(function(c,ci){c[1].forEach(function(x){var p=x.split("|"),b=nz(p[0].
  * l'ordre de la question.
  */
 function fProj(nq,skw){var X=idx(),ws=nq.split(" "),out=[];
-P.forEach(function(p){var sc=0,pos=999,pk=X.pk[p[0]];ws.forEach(function(w,i){if(!(w.length>=4||w==="jo")||STOP.indexOf(" "+w+" ")>-1||PSTOP.indexOf(" "+w+" ")>-1||skw.indexOf(w)>-1)return;for(var k=0;k<pk.length;k++){if(sm(w,pk[k])||(w.length===4&&pk[k].length===4&&lev(w,pk[k])<=1)){var df=X.df[pk[k]];if(df<=2){sc+=df===1?3:2;pos=Math.min(pos,i)}break}}});if(sc>=2)out.push({p:p,pos:pos})});
+P.forEach(function(p){var sc=0,pos=999,pk=X.pk[p[0]];ws.forEach(function(w,i){if(!(w.length>=4||w==="jo")||STOP.indexOf(" "+w+" ")>-1||PSTOP.indexOf(" "+w+" ")>-1||skw.indexOf(w)>-1)return;for(var k=0;k<pk.length;k++){if(sm(w,pk[k])||(w.length===4&&pk[k].length===4&&w.slice(0,2)===pk[k].slice(0,2)&&lev(w,pk[k])<=1)){var df=X.df[pk[k]];if(df<=2){sc+=df===1?3:2;pos=Math.min(pos,i)}break}}});if(sc>=2)out.push({p:p,pos:pos})});
 return out.sort(function(a,b){return a.pos-b.pos})}
 /**
  * Trouve les compétences citées : nom exact, premier mot, faute de frappe, alias, mots-clés des
@@ -963,7 +986,7 @@ function skUse(s){var t=TAG[s.b],ps=t?withTag(t):(USE[s.b]||[]).map(getP);return
  * stage. yn : question fermée (commence par « Oui »).
  */
 function skAns(h,yn){SRC.c=1;var o=h.slice(0,4).map(function(x,i){var s=x.s,ps=skUse(s),ex=EXP.filter(function(e){return e.t.some(function(y){return s.l.indexOf(y.split("|")[0])===0})});
-return (i===0&&yn?"Oui. ":"")+(x.m&&nz(x.m)!==s.b?"« "+x.m+" » relève de <strong>"+s.l+"</strong> : ":"<strong>"+s.l+"</strong> : ")+p3(s.d||"")+(ps.length?" Projets concernés : "+ps.slice(0,5).map(lk).join(", ")+(ps.length>5?"…":"")+".":"")+(ex.length&&!/stage/.test(s.d||"")?" Il l'a aussi utilisé lors de son stage à la DRAC.":"")});
+return (i===0&&yn?"Oui. ":"")+(x.m&&nz(x.m)!==s.b?"« "+x.m+" » relève de <strong>"+s.l+"</strong> : ":(IC[s.s]?'<span class="ci">'+icn(s.s)+'</span>':"")+"<strong>"+s.l+"</strong> : ")+p3(s.d||"")+(ps.length?" Projets concernés : "+ps.slice(0,5).map(lk).join(", ")+(ps.length>5?"…":"")+".":"")+(ex.length&&!/stage/.test(s.d||"")?" Il l'a aussi utilisé lors de son stage à la DRAC.":"")});
 CT={t:"s",l:h[0].s.l,b:h[0].s.b};return o.join("<br><br>")+(h.length>4?"<br><br>"+(h.length-4)+" autre(s) compétence(s) citée(s) : posez-moi la question une par une.":"")}
 /**
  * Comparaison de deux ou trois compétences.
@@ -976,7 +999,7 @@ function pCmp(a){a.forEach(function(x){SEEN[x.p[0]]=1;SRC.pj[x.p[0]]=1});CT={t:"
 /**
  * Liste des compétences d'un domaine (ci : indice dans SK).
  */
-function catAns(ci){SRC.c=1;return "<strong>"+SK[ci][0]+"</strong> : "+SK[ci][1].map(function(x){return x.split("|")[0]}).join(", ")+"."}
+function catAns(ci){SRC.c=1;return "<strong>"+SK[ci][0]+"</strong><div class=\"cr\">"+skills(SK[ci][1])+"</div>"}
 /**
  * Réponse sur une expérience (i : indice dans EXP ; sans i, liste des deux). f : facette (dates,
  * lieu, durée, outils).
@@ -1068,10 +1091,10 @@ function bestS(c,qs){var ss=c.text.match(/[^.!?]+[.!?]*/g)||[c.text],bi=0,bs=-1;
  * Recherche dans tout le contenu du site (ou dans un seul projet si only est donné) et retourne
  * les phrases les plus pertinentes avec leur source, ou null si rien de convaincant.
  */
-function retr(nq,only){kb();var qs=[];tkz(nq).forEach(function(w){if(qs.indexOf(w)<0)qs.push(w)});if(!qs.length)return null;
+function retr(nq,only,n){kb();var qs=[];tkz(nq).forEach(function(w){if(qs.indexOf(w)<0)qs.push(w)});if(!qs.length)return null;
 var sc=KB.filter(function(c){return!only||c.id===only}).map(function(c){var r=bm(c,qs);return{c:c,s:r.s*(c.f==="Résumé"?.75:1),h:r.h}}).filter(function(x){return x.h>0}).sort(function(a,b){return b.s-a.s});
-var th=only?.5:3.4;if(!sc.length||sc[0].s<th)return null;if(!only&&!((sc[0].h>=2&&sc[0].s>=3.4)||sc[0].s>=4.5))return null;
-var out=[],seen={};sc.forEach(function(x){if(out.length<2&&x.s>=th*.75&&!seen[x.c.src]){seen[x.c.src]=1;out.push(x)}});
+var th=only?.5:(n?2:3.4);if(!sc.length||sc[0].s<th)return null;if(!only&&!n&&!((sc[0].h>=2&&sc[0].s>=3.4)||(qs.length===1&&sc[0].s>=3)))return null;
+var out=[],seen={};sc.forEach(function(x){if(out.length<(n||2)&&x.s>=th*.75&&!seen[x.c.src]){seen[x.c.src]=1;out.push(x)}});
 return out.map(function(x){var c=x.c;if(c.k==="p")SRC.pj[c.id]=1;else if(c.k==="e")SRC.e=1;else if(c.k==="s")SRC.c=1;else SRC.a=1;return '<strong>'+hx(c.src)+'</strong> ('+c.f+') : '+hx(bestS(c,qs))+(c.k==="p"?"":' <a href="'+c.href+'">Voir</a>')}).join("<br><br>")}
 /**
  * Réponse précise sur un projet : cherche dans ses textes les phrases proches des mots de la
@@ -1142,7 +1165,117 @@ function excl(nq){var m=nq.match(/\b(?:sans|hors|excepte|ni|autre que|autres que
 /**
  * Message d'aide : ce que sait faire l'assistant et comment le questionner.
  */
-var HELP="Je suis l'assistant du portfolio de Morade. Je ne suis pas une IA générative : je réponds à partir du contenu de ce site (parcours, expériences, compétences, projets) grâce à un moteur de compréhension de texte qui fonctionne dans votre navigateur, sans envoyer vos questions nulle part.<br><br>Je sais :"+ul(["<strong>traiter plusieurs questions à la fois</strong> : « Quelles sont ses études, et que fait-il avec Python ? »","<strong>comparer</strong> : « Compare R et Python », « Compare les projets lait et AGRICAN »","<strong>filtrer</strong> : « Projets de BUT 1 utilisant R », « 3 projets sans Python »","<strong>suivre la conversation</strong> : « Parle-moi du projet scoring » puis « Et son objectif ? »","<strong>chercher dans le détail</strong> : « Quelles données utilise le projet JO ? »","<strong>synthétiser</strong> : « Résume son profil », « Quels sont ses points forts ? »","<strong>aller vite</strong> : tapez « / » pour les commandes (/projets, /resume…), Ctrl+K pour m'ouvrir, ↑ pour rappeler votre dernière question"]);
+var HELP="Je suis l'assistant du portfolio de Morade. Je ne suis pas une IA générative : je réponds à partir du contenu de ce site (parcours, expériences, compétences, projets) grâce à un moteur de compréhension de texte qui fonctionne dans votre navigateur, sans envoyer vos questions nulle part.<br><br>Je sais :"+ul(["<strong>traiter plusieurs questions à la fois</strong> : « Quelles sont ses études, et que fait-il avec Python ? »","<strong>comparer</strong> : « Compare R et Python », « Compare les projets lait et AGRICAN »","<strong>filtrer</strong> : « Projets de BUT 1 utilisant R », « 3 projets sans Python »","<strong>suivre la conversation</strong> : « Parle-moi du projet scoring » puis « Et son objectif ? »","<strong>chercher dans le détail</strong> : « Quelles données utilise le projet JO ? »","<strong>synthétiser</strong> : « Résume son profil », « Quels sont ses points forts ? »","<strong>aller vite</strong> : tapez « / » pour les commandes (/projets, /resume…), Ctrl+K pour m'ouvrir, ↑ pour rappeler votre dernière question","<strong>agir sur le site</strong> : « Ouvre la page du projet lait », « Va aux compétences », « Passe en mode sombre »","<strong>analyser une offre</strong> : collez le texte d'une offre d'emploi, je compare ses technologies aux compétences du site","<strong>rédiger</strong> : « Pitch », « Bio courte », « Écris un message pour le contacter »","<strong>visualiser</strong> : « Graphique des technologies », « Frise chronologique »","<strong>jouer</strong> : « Quiz » ; <strong>chercher</strong> : « cherche Kaggle » ; <strong>anglais</strong> : questions comprises en anglais"]);
+/* ---------- Capacités avancées : actions, textes prêts à copier, graphiques, frise, quiz, offre, anglais ---------- */
+/** Fragment d'expression régulière : formules de politesse acceptées avant un ordre (« peux-tu... », « s'il te plaît... »). */
+var POL="(?:(?:peux tu|pouvez vous|tu peux|vous pouvez|s il te plait|s il vous plait|svp|stp|merci|alors|bonjour)\\s+)*";
+/** ACTS : actions que l'interface exécute après la réponse (aller à une page, changer le thème, remonter). */
+var ACTS=[];
+/**
+ * Ordres donnés à l'assistant : « passe en mode sombre », « remonte », « ouvre la page du projet lait »,
+ * « va aux compétences ». Retourne la phrase de confirmation (et enregistre l'action dans ACTS) ou null.
+ * nq : question normalisée ; pj : projets cités.
+ */
+function actAns(nq,pj){
+var go=new RegExp("^"+POL+"(ouvre|ouvrir|va|vas|aller|emmene|amene|redirige|accede|acceder)\\b"),tm=new RegExp("^"+POL+"(passe|mets|active|bascule|change)\\b"),up=new RegExp("^"+POL+"(remonte|retourne en haut)\\b");
+if(tm.test(nq)){var th=nq.match(/\b(sombre|noir|dark|clair|light)\b/);if(th&&/\b(mode|theme|affichage|interface|couleurs?)\b/.test(nq)){var m=/sombre|noir|dark/.test(th[1])?"dark":"light";ACTS.push({t:"theme",m:m});return "C'est fait : j'active le mode "+(m==="dark"?"sombre":"clair")+"."}}
+if(up.test(nq)||(go.test(nq)&&/\b(haut de page|tout en haut)\b/.test(nq))){ACTS.push({t:"top"});return "Je remonte en haut de la page."}
+if(go.test(nq)){
+if(pj.length){var p=pj[0].p;SRC.pj[p[0]]=1;ACTS.push({t:"go",h:"#/projet/"+p[0]});return "J'ouvre la page du projet <strong>"+p[1]+"</strong>."}
+var T=[[/\bformulaire\b|\bcontact\b/,"#/contact","le formulaire de contact"],[/\bcompetences?\b/,"#/section/competences","la section Compétences"],[/\bexperiences?\b/,"#/section/experience","la section Expérience"],[/\ba propos\b|\bformation\b/,"#/section/apropos","la section À propos"],[/\bprojets?\b/,"#/projets","la page Projets"],[/\baccueil\b/,"#/","l'accueil"]];
+for(var i=0;i<T.length;i++)if(T[i][0].test(nq)){ACTS.push({t:"go",h:T[i][1]});return "J'ouvre "+T[i][2]+"."}}
+return null}
+/** Échappe un texte pour un attribut HTML en conservant les retours à la ligne (&#10;). */
+function dt(t){return hx(t).replace(/\n/g,"&#10;")}
+/** Boutons « Copier » (et « Utiliser dans le formulaire » si fill) pour un texte généré. */
+function actBtns(t,fill){return '<div class="abtn"><button type="button" class="qcp" data-t="'+dt(t)+'">Copier</button>'+(fill?'<button type="button" class="qf" data-t="'+dt(t)+'">Utiliser dans le formulaire</button>':'')+'</div>'}
+/** Bio courte à la troisième personne, calculée à partir des données. */
+function bioAns(){SRC.a=1;var t="Morade OSENI est étudiant en BUT Science des Données à l'IUT Grand Ouest Normandie. Passionné par l'analyse de données, il travaille avec R, Python, SQL, Power BI et Qlik Sense, a réalisé "+P.length+" projets et un stage de data analyst à la DRAC de Normandie.";return "<strong>Bio courte</strong> (à copier) :<div class=\"draft\">"+hx(t)+"</div>"+actBtns(t,false)}
+/** Pitch à la première personne (formulé avec les mots de la page « À propos »). */
+function pitchFirst(){SRC.a=1;var t="Bonjour, je suis Morade OSENI, étudiant en troisième année de BUT Science des Données à l'IUT Grand Ouest Normandie. J'analyse, modélise et visualise des données avec R, Python, SQL, Power BI et Qlik Sense. J'ai réalisé "+P.length+" projets et un stage de data analyst à la DRAC de Normandie. Curieux et rigoureux, j'aime explorer, comprendre et donner du sens aux données.";return "<strong>Pitch à la première personne</strong> (à dire ou à copier) :<div class=\"draft\">"+hx(t)+"</div>"+actBtns(t,false)}
+/** Modèle de message à envoyer à Morade (objet détecté : stage, alternance, collaboration, projet, poste). */
+function draftAns(nq){SRC.k=1;var o="votre parcours";[[/\bstage\b/,"un stage"],[/\balternance\b/,"une alternance"],[/\b(mission|freelance|collaborat\w*)\b/,"une collaboration"],[/\bprojet\b/,"un projet"],[/\b(recrut\w*|embauch\w*|poste|emploi|cdi|cdd)\b/,"un poste"]].forEach(function(x){if(o==="votre parcours"&&x[0].test(nq))o=x[1]});
+var t="Bonjour Morade,\n\nJ'ai découvert votre portfolio et je souhaiterais échanger avec vous concernant "+o+". Seriez-vous disponible prochainement pour en discuter ?\n\nCordialement,";
+return "<strong>Modèle de message</strong> :<div class=\"draft\">"+hx(t).replace(/\n/g,"<br>")+"</div>"+actBtns(t,true)}
+/** Bouton qui envoie une question restée sans réponse à Morade (pré-remplit le formulaire de contact). */
+function fillBtn(q){var t="Bonjour Morade,\n\nJ'ai une question que l'assistant du site n'a pas pu traiter : « "+String(q).trim()+" »\n\nMerci d'avance.";return '<div class="abtn"><button type="button" class="qf" data-t="'+dt(t)+'">Envoyer cette question à Morade</button></div>'}
+/** Diagramme en barres HTML/CSS : rows = [[libellé, valeur], ...]. */
+function bars(rows){var mx=Math.max.apply(null,rows.map(function(r){return r[1]}))||1;return '<div class="chart">'+rows.map(function(r,i){return '<div class="cr2"><span class="cl">'+hx(r[0])+'</span><span class="cb"><i style="width:'+Math.round(100*r[1]/mx)+'%;animation-delay:'+i*70+'ms"></i></span><b>'+r[1]+'</b></div>'}).join("")+'</div>'}
+/** Technologies classées par nombre de projets : [[nom, nombre], ...]. */
+function techRows(){var c={};P.forEach(function(p){p[7].forEach(function(t){c[t]=(c[t]||0)+1})});return Object.keys(c).sort(function(a,b){return c[b]-c[a]}).map(function(t){return[t,c[t]]})}
+/** Graphiques : projets par technologie (défaut), par niveau, ou compétences par domaine ; gère « la plus utilisée ». */
+function chartAns(nq){SRC.p=1;SRC.c=1;var sup=/\b(le plus|la plus|les plus)\b/.test(nq),k=/\b(annee|but|niveau)\b/.test(nq)?"y":(/\b(domaine|domaines|competences?)\b/.test(nq)&&!sup?"d":"t"),h;
+if(k==="y")h="<strong>Projets par niveau</strong>"+bars([["BUT 1",P.filter(function(p){return p[2]==="BUT 1"}).length],["BUT 2",P.filter(function(p){return p[2]==="BUT 2"}).length]]);
+else if(k==="d")h="<strong>Compétences par domaine</strong>"+bars(SK.map(function(c){return[c[0],c[1].length]}));
+else{var r=techRows();h=(sup?"<strong>"+r[0][0]+"</strong> est la technologie la plus utilisée dans ses projets ("+r[0][1]+" sur "+P.length+").<br>":"")+"<strong>Projets par technologie</strong>"+bars(r)}
+return h}
+/** Frise chronologique des études et expériences (dates présentes sur le site). */
+function timeAns(){SRC.a=1;SRC.e=1;var it=[["2024","Baccalauréat scientifique (mention Assez Bien)","Collège privé les Cartésiens, Côte d'Ivoire"],["Depuis 2024","BUT Science des Données","IUT Grand Ouest Normandie, Lisieux"],["Mai 2025 - Août 2026","Employé de libre-service (emploi étudiant)","Action, Hérouville-Saint-Clair"],["Avril 2026 - Juin 2026","Stage Data Analyst","DRAC de Normandie, Caen"]];
+return "<strong>Frise chronologique</strong><div class=\"tlm\">"+it.map(function(x){return "<div><strong>"+x[0]+"</strong> : "+x[1]+"<small>"+x[2]+"</small></div>"}).join("")+"</div>Les "+P.length+" projets se répartissent entre le BUT 1 ("+P.filter(function(p){return p[2]==="BUT 1"}).length+") et le BUT 2 ("+P.filter(function(p){return p[2]==="BUT 2"}).length+")."}
+/* ---------- Quiz : 5 questions fabriquées à partir des données du site ---------- */
+/** État du quiz : n = questions posées, s = score, q = question en cours, u = générateurs déjà utilisés. */
+var QZ={n:0,s:0,q:null,u:[]};
+/** Mélange un tableau (copie). */
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+/** Quatre choix : la bonne réponse ok + trois réponses prises dans pool, mélangées. */
+function opts(ok,pool,n){var o=shuf(pool.filter(function(x){return x!==ok})).slice(0,(n||4)-1);o.push(ok);return shuf(o)}
+/** Titre d'un projet sans la parenthèse finale. */
+function titleOf(p){return p[1].replace(/\s*\(.*\)/,"")}
+/** Générateurs de questions : chacun retourne {q : énoncé, ok : bonne réponse, pool : mauvaises réponses possibles}. */
+var QG=[
+function(){var t=["Qlik Sense","R Markdown"][Math.floor(Math.random()*2)];return{q:"Quel projet utilise la technologie « "+t+" » ?",ok:titleOf(withTag(t)[0]),pool:P.filter(function(x){return x[7].indexOf(t)<0}).map(titleOf)}},
+function(){var p=P[Math.floor(Math.random()*P.length)];return{q:"Quel projet correspond à cette description : « "+p[3]+" » ?",ok:titleOf(p),pool:P.map(titleOf)}},
+function(){return{q:"Où Morade a-t-il fait son stage de data analyst ?",ok:"DRAC de Normandie",pool:["Action","IUT Grand Ouest Normandie","Collège privé les Cartésiens","Hérouville-Saint-Clair"]}},
+function(){return{q:"Quelle est la durée de son stage à la DRAC ?",ok:"10 semaines",pool:["4 semaines","6 mois","1 an","2 semaines"]}},
+function(){return{q:"Dans quelle ville se situe la DRAC où il a fait son stage ?",ok:"Caen",pool:["Rouen","Lisieux","Hérouville-Saint-Clair","Paris"]}},
+function(){return{q:"Quel poste occupe-t-il chez Action ?",ok:"Employé de libre-service",pool:["Caissier","Responsable de rayon","Chef d'équipe","Vendeur conseil"]}},
+function(){return{q:"Quelle technologie est la plus utilisée dans ses projets ?",ok:techRows()[0][0],pool:["R","LaTeX","Python","SQL","Qlik Sense"]}},
+function(){return{q:"Combien de projets a-t-il réalisés (BUT 1 et BUT 2) ?",ok:String(P.length),pool:[String(P.length-2),String(P.length+2),String(P.length-1),String(P.length+3)]}},
+function(){var l=[];SK.forEach(function(c){c[1].forEach(function(x){var p=x.split("|");if(p[1])l.push([p[0].replace(/\s*\(.*\)/,""),c[0]])})});var x=l[Math.floor(Math.random()*l.length)];return{q:"Dans quel domaine de compétences classe-t-il « "+x[0]+" » ?",ok:x[1],pool:SK.map(function(c){return c[0]})}}
+];
+/** Tire une nouvelle question (sans répéter un générateur) et la mémorise dans QZ.q. */
+function quizQ(){var i,t=0;do{i=Math.floor(Math.random()*QG.length);t++}while(QZ.u.indexOf(i)>-1&&t<40);QZ.u.push(i);var g=QG[i](),o=opts(g.ok,g.pool,4);QZ.q={q:g.q,o:o,k:o.indexOf(g.ok),ok:g.ok};return QZ.q}
+/** HTML de la question en cours : énoncé et un bouton par choix (envoie « __qz:n »). */
+function quizHTML(){var q=QZ.q;return "<strong>Question "+(QZ.n+1)+" / 5</strong><br>"+hx(q.q)+'<div class="qbs">'+q.o.map(function(t,i){return '<button type="button" class="qb qz" data-q="__qz:'+i+'" data-l="'+hx(t)+'">'+hx(t)+'</button>'}).join("")+"</div>"}
+/** Fait avancer le quiz : a = « start » (nouvelle partie) ou numéro du choix. Retourne le retour sur la réponse et la suite. */
+function quizAns(a){
+if(a==="start"){QZ={n:0,s:0,q:null,u:[]};quizQ();return "<strong>Quiz sur Morade</strong> : 5 questions, une seule bonne réponse chacune.<br><br>"+quizHTML()}
+if(!QZ.q){QZ={n:0,s:0,q:null,u:[]};quizQ();return quizHTML()}
+var q=QZ.q,okk=+a===q.k,fb=okk?"Bonne réponse !":"Pas tout à fait : la bonne réponse était « "+hx(q.ok)+" ».";QZ.s+=okk?1:0;QZ.n++;
+if(QZ.n>=5){var sc=QZ.s;QZ.q=null;return fb+"<br><br><strong>Score final : "+sc+" / 5.</strong> "+(sc===5?"Sans faute !":sc>=3?"Bien joué !":"Bon début, vous en savez plus sur Morade maintenant.")+'<div class="qbs"><button type="button" class="qb" data-q="quiz">Rejouer</button><button type="button" class="qb" data-q="Quels sont ses projets ?">Voir les projets</button></div>'}
+quizQ();return fb+"<br><br>"+quizHTML()}
+/* ---------- Offre d'emploi collée : compatibilité indicative ---------- */
+/** Technologies courantes absentes du site (utilisées pour signaler ce qui manque dans une offre). */
+var JOBT=["tableau","looker","spark","hadoop","scala","java","c++","c#","php","docker","kubernetes","aws","azure","gcp","bigquery","airflow","dbt","mongodb","postgresql","postgres","oracle","tensorflow","pytorch","scikit","sklearn","machine learning","deep learning","nlp","big data","etl","power apps","alteryx","talend","jira","hana","spss","stata","matlab","julia","react","angular","vue","node","typescript","databricks","terraform","gitlab","jenkins"];
+/** Vrai si le texte ressemble à une offre : assez long et riche en technologies connues (ou mots d'offre). */
+function isOffer(q){var nq=nz(q);if(nq.length<140)return false;var h=fSk(nq).length;return h>=2||(h>=1&&/\b(offre|poste|profil recherche|missions?|vous maitrisez|nous recherchons|competences requises|vos missions|descriptif)\b/.test(nq))}
+/** Compare une offre aux compétences du site : technologies reconnues, absentes, projets pertinents, indice indicatif. */
+function jobMatch(q){var nq=nz(q),h=fSk(nq),seen={},hits=[];h.forEach(function(o){if(!seen[o.s.l]){seen[o.s.l]=1;hits.push(o.s)}});
+var pad=" "+nq+" ",miss=[];JOBT.concat(UNKP).forEach(function(t){var k=nz(t);if(pad.indexOf(" "+k+" ")>-1&&miss.indexOf(t)<0)miss.push(t)});
+if(!hits.length&&!miss.length)return null;
+var tot=hits.length+miss.length,sc=Math.round(100*hits.length/tot),cnt={};
+hits.forEach(function(s){skUse(s).forEach(function(p){cnt[p[0]]=(cnt[p[0]]||0)+1})});
+var top=Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a]}).slice(0,3).map(getP);SRC.c=1;SRC.k=1;
+return "<strong>Analyse de l'offre</strong> (indicative : seules les technologies et méthodes citées sont comparées aux compétences du site)<div class=\"meter\"><i style=\"width:"+sc+"%\"></i></div><b>"+sc+" %</b> de technologies reconnues ("+hits.length+" sur "+tot+")"+
+(hits.length?"<br><br><strong>Présentes sur le site</strong><div class=\"cr\">"+skills(hits.map(function(s){return s.l+"|"+(s.s||"")+"|"+(s.d||"")}))+"</div>":"")+
+(miss.length?"<br><strong>Non listées sur le site</strong><div class=\"cr\">"+tags(miss)+"</div>":"")+
+(top.length?"<br><strong>Projets les plus pertinents</strong><div class=\"pcs\">"+top.map(pcard).join("")+"</div>":"")+
+"<br>Cela ne tient pas compte du diplôme, de l'expérience demandée ni des qualités humaines. "+CONTACT}
+/* ---------- Questions en anglais : traduction mot à mot vers le français, puis moteur habituel ---------- */
+/** Mots reconnaissables comme de l'anglais (au moins 2 et 30 % de la question). */
+var ENM=" he know use uses speak many from was were will would the what which who where when how does do can could his her she tell about skills skill projects project education studies degree hello hi thanks thank you your please summary available internship job with and is are of did has have show give ";
+/** Expressions anglaises remplacées en bloc par leur équivalent français. */
+var ENP=[[/\btell me about\b/g,"parle moi de"],[/\bwho is\b/g,"qui est"],[/\bwhat are\b/g,"quelles sont"],[/\bwhat is\b/g,"quel est"],[/\bhow many\b/g,"combien de"],[/\bhow long\b/g,"combien de temps"],[/\bhow (can|do) i contact\b/g,"comment le contacter"],[/\bwhere did he\b/g,"ou a il"],[/\bdid he\b/g,"a t il"],[/\bhas he\b/g,"a t il"],[/\bdoes he (know|use|have|speak)\b/g,"il"],[/\bis he\b/g,"est il"],[/\bthank you\b/g,"merci"],[/\bin short\b/g,"en bref"],[/\bsummar(y|ize|ise)\b/g,"resume"]];
+/** Dictionnaire anglais -> français (chaîne vide = mot ignoré). */
+var ENW={skills:"competences",skill:"competence",projects:"projets",project:"projet",experience:"experience",experiences:"experiences",education:"formation",studies:"etudes",study:"etudes",degree:"diplome",hello:"bonjour",hi:"bonjour",thanks:"merci",profile:"profil",background:"parcours",internship:"stage",job:"emploi",languages:"langues",hire:"recruter",tools:"outils",best:"meilleur",show:"montre",give:"donne",tell:"parle",me:"moi",about:"",the:"",a:"",an:"",is:"",are:"",does:"",do:"",can:"",could:"",please:"",of:"de",and:"et",with:"avec",on:"sur",his:"ses",he:"il",him:"lui",her:"ses",she:"elle",you:"tu",your:"ton",what:"quels",which:"quels",who:"qui",where:"ou",when:"quand",how:"comment",available:"disponible",availability:"disponibilite",chart:"graphique",graph:"graphique",timeline:"chronologie",strengths:"points forts",strength:"point fort",student:"etudiant",years:"annees",year:"annee",old:"age",salary:"salaire",phone:"telephone",number:"numero",address:"adresse",use:"utilisent",uses:"utilise",using:"utilisant",list:"liste",compare:"compare",has:"a",have:"ont"};
+/** Vrai si la question normalisée est (probablement) en anglais. */
+function isEN(nq){var w=nq.split(" "),n=0;w.forEach(function(x){if(ENM.indexOf(" "+x+" ")>-1)n++});return n>=2&&n>=w.length*.3}
+/** Traduit une question anglaise normalisée en français approximatif (assez pour le moteur). */
+function toFR(nq){var p=nq;ENP.forEach(function(r){p=p.replace(r[0],r[1])});return p.split(" ").map(function(w){return ENW.hasOwnProperty(w)?ENW[w]:w}).join(" ").replace(/\s+/g," ").trim()}
+/** Recherche libre (« cherche Kaggle ») : jusqu'à 4 passages du site, avec leur source. */
+function searchAns(term){var r=retr(nz(term),null,4);return r?"<strong>Résultats pour « "+hx(term)+" »</strong><br><br>"+r:"Aucun passage du site ne correspond à « "+hx(term)+" »."}
+/** Réponse honnête pour une technologie absente du site (u : mot reconnu) avec le domaine le plus proche. */
+function unkAns(u){return "Je ne vois pas « "+hx(u)+" » parmi les compétences listées sur le site. Les plus proches : "+(/learn|machine|deep|intelligence|apprentissage|data science/.test(u)?"modèle linéaire, méthodes de clustering et méthodes factorielles (analyse statistique).":catAns(UNKC[u]===undefined?0:UNKC[u]))+" Vous pouvez demander la liste complète : « Quelles sont ses compétences ? »"}
 /**
  * Répond à UNE question (un segment) : retourne du HTML, ou null si rien n'est compris. Voir les
  * étapes numérotées ci-dessous.
@@ -1162,6 +1295,15 @@ if(at(/\b(merci|thanks|bravo|genial|parfait)\b/)>=0&&nw<6)return "Avec plaisir !
 if(at(/\b(au revoir|bye|a bientot|a plus tard|bonne journee|bonne soiree)\b/)>=0)return "Au revoir et merci pour votre visite !";
 if(at(/\b(ca va|comment vas tu|comment allez vous)\b/)>=0&&nw<6)return "Très bien, merci ! Que souhaitez-vous savoir sur Morade ?";
 if(at(/\b(es tu|etes vous|tu es|vous etes) (une? |un )?(ia|intelligence|robot|bot|chatbot|humain|vrai|chatgpt|claude|assistant|vivant)\b|\bqui t a (cree|fait|programme)\b|\bcomment (tu )?(fonctionnes?|marches?)\b|\bque peux tu faire\b|\bpeux tu m aider\b|\baide moi\b|^aide$|^help$|\bcomment (ca )?marche\b/)>=0)return HELP;
+// ÉTAPE 1b - Capacités avancées : actions sur le site, quiz, textes prêts à copier, frise, graphiques.
+var pj0=fProj(nq,[]),act=actAns(nq,pj0);if(act)return act;
+if(QZ.q&&at(/\b(arrete\w*|stop|quitte\w*|abandonne\w*)\b/)>=0&&/\b(quiz|jeu)\b/.test(nq)){var sc0=QZ.s,n0=QZ.n;QZ.q=null;return "Quiz arrêté ("+sc0+" bonne(s) réponse(s) sur "+n0+")."}
+if(at(/\b(quiz|quizz|teste moi|testez moi)\b/)>=0)return quizAns("start");
+if(at(/\b(pitch|elevator)\b/)>=0)return pitchFirst();
+if(at(/\b(bio|biographie|presentation courte|description courte|accroche)\b/)>=0)return bioAns();
+if(new RegExp("^"+POL+"(ecris|redige|prepare|genere|propose|fais)\\b").test(nq)&&/\b(message|mail|email|courrier)\b/.test(nq))return draftAns(nq);
+if(at(/\b(chronolog\w*|frise|timeline|ligne du temps|dates? cles?)\b/)>=0)return timeAns();
+if(at(/\b(graphique|diagramme|histogramme|repartition|classement)\b|\bpar (technologie|niveau|annee|domaine)\b/)>=0||(/\b(le plus|la plus|les plus)\b/.test(nq)&&/\b(utilis\w*|frequent\w*)\b/.test(nq)))return chartAns(nq);
 // ÉTAPE 2 - Informations absentes du site : CV, langues, ancienneté dans la formation.
 if(at(/\b(cv|curriculum)\b/)>=0)return "Le CV n'est pas téléchargeable sur ce site, car il contient des coordonnées personnelles. Vous pouvez en faire la demande via le <a href=\"#/contact\">formulaire de contact</a>.";
 if(at(/\b(langues?|anglais|bilingue|toeic)\b/)>=0&&!/\blangages?\b/.test(nq))return "Les langues parlées ne sont pas indiquées sur ce site. Vous pouvez poser la question via le <a href=\"#/contact\">formulaire de contact</a>.";
@@ -1191,6 +1333,8 @@ var ctxS=!sk.length&&!pj.length&&CT.t==="s"&&projW>=0&&at(/\b(dans quels?|utilis
 // listed = une liste de projets existe déjà (évite les doublons) ; ctxF = aspect demandé dans le
 // contexte courant.
 var listed=false,a,ctxF=!pj.length&&!sk.length&&!ex.length&&(CT.t==="p"||CT.t==="e")&&!!fc;
+// Technologie absente du site citée sans compétence ni expérience reconnue : réponse honnête immédiate (« tableau » seul, hors « tableau de bord », désigne le logiciel Tableau).
+var uk=nq.split(" ").filter(function(w){return UNK[w]&&!(w==="tableau"&&/\btableaux? de bord\b/.test(nq))})[0];if(uk&&!sk.length&&!ex.length&&/\b(connait|connais|maitris\w*|sait|sais|utilis\w*|deja|competences?|experience|travaille|fait)\b/.test(nq))return unkAns(uk);
 // ÉTAPE 5 - Construction de la réponse, bloc par bloc. D'abord les synthèses : résumé, points forts,
 // « pourquoi le recruter ».
 /* synthèse de profil */
@@ -1223,7 +1367,7 @@ if((a=at(/\b(formation|formations|etudes?|etudie\w*|diplomes?|bac|baccalaureat|i
 if((a=at(/\b(parcours|cursus|background)\b/))>=0&&!ex.length&&!bl.length)add(a,aboutAns()+"<br><br>"+forAns());
 if(!ex.length&&!navE&&av<0&&!/\bcombien\b/.test(nq)&&(a=at(/\b(experiences?|travail\w*|emplois?|professionnel\w*|entreprises?|postes?|metiers?|stages?|jobs?|carriere)\b/))>=0)add(a,(/professionnel/.test(nq)&&!/etudiant/.test(nq))?expAns(0)+"<br><br>Il a aussi occupé un emploi étudiant chez Action (non professionnel).":expAns());
 if(!sk.length&&!ctxF){var cat=false;CATR.forEach(function(r,i){var m=at(r);if(m>=0){cat=true;add(m,catAns(i))}});
- if(!cat&&(a=at(/\b(competences?|savoir faire|outils?|technologies?|logiciels?|langages?|maitris\w*|stack|techniques)\b/))>=0&&!pj.length&&!ex.length&&!ctxS&&!ctxF&&!/\bcombien\b/.test(nq)){SRC.c=1;add(a,"Compétences de Morade :"+ul(SK.map(function(c){return "<strong>"+c[0]+"</strong> : "+c[1].map(function(x){return x.split("|")[0]}).join(", ")}))+"Survolez une compétence dans la page pour voir sa description.")}}
+ if(!cat&&(a=at(/\b(competences?|savoir faire|outils?|technologies?|logiciels?|langages?|maitris\w*|stack|techniques)\b/))>=0&&!pj.length&&!ex.length&&!ctxS&&!ctxF&&!/\bcombien\b/.test(nq)){SRC.c=1;add(a,"Compétences de Morade (survolez une pastille pour voir sa description) :"+SK.map(function(c){return "<strong>"+c[0]+"</strong><div class=\"cr\">"+skills(c[1])+"</div>"}).join(""))}}
 if(!pj.length&&!listed&&!navP&&!ctxS&&!reco&&projW>=0&&(yr||wantList||top)&&!(sk.length&&!tag)){add(projW,pList(yr,tag,/\bcombien\b/.test(nq)||at(/\b(tous|toutes|liste\w*)\b/)>=0||(!yr&&!tag&&!exc),{ex:exc,top:top}))}
 if(/\bcombien\b/.test(nq)&&!/\bcombien de temps\b/.test(nq)){if(/\bcompetences?\b/.test(nq)){var n=0;SK.forEach(function(c){n+=c[1].length});add(0,"Morade présente <strong>"+n+" compétences</strong> réparties en "+SK.length+" domaines.")}else if(/\bexperiences?\b/.test(nq))add(0,"Morade a <strong>1 expérience professionnelle</strong> (un stage à la DRAC de Normandie) et un emploi étudiant chez Action.")}
 // Contact, données personnelles et disponibilité.
@@ -1232,7 +1376,7 @@ else if((a=at(/\b(contact\w*|joindre|ecrire|ecris|message|linkedin|reseaux?|renc
 if(av>=0){SRC.k=1;add(av,"Le site ne précise pas la disponibilité ou la recherche de Morade. Pour une opportunité ou une proposition, le plus simple est de lui écrire via le <a href=\"#/contact\">formulaire de contact</a>.")}
 // Technologie absente du site : réponse honnête et domaine le plus proche.
 if(!bl.length){var u=nq.split(" ").filter(function(w){return UNK[w]})[0]||UNKP.filter(function(m){return q.indexOf(" "+m+" ")>-1})[0];
- if(u)add(0,"Je ne vois pas « "+hx(u)+" » parmi les compétences listées sur le site. Les plus proches : "+(/learn|machine|deep|intelligence|apprentissage|data science/.test(u)?"modèle linéaire, méthodes de clustering et méthodes factorielles (analyse statistique).":catAns(UNKC[u]===undefined?0:UNKC[u]))+" Vous pouvez demander la liste complète : « Quelles sont ses compétences ? »")}
+ if(u)add(0,unkAns(u))}
 // Questions de suivi sans entité (« et son objectif ? », « plus de détails »).
 if(!bl.length&&CT.t){var nav=at(/\b(suivant|suivante|prochain|precedent|precedente)\b/),cue=fc||at(/\b(detail|details|plus|suite|celui ci|ce projet|dessus|cette competence|meme)\b/)>=0;
  if(CT.t==="p"){if(nav>=0)add(nav,projSum(nextP(/precedent/.test(nq))));else if(cue)add(0,detailQ(getP(CT.id),nq)||projFacet(getP(CT.id),fc||"det"))}
@@ -1257,24 +1401,39 @@ var SRC={pj:{}};
  */
 function srcLinks(){var o=[];Object.keys(SRC.pj||{}).forEach(function(id){var p=getP(id);if(p)o.push([p[1].replace(/\s*\(.*\)/,"").slice(0,30),"#/projet/"+id])});if(SRC.p&&!o.length)o.push(["Projets","#/projets"]);if(SRC.e)o.push(["Expérience","#/section/experience"]);if(SRC.c)o.push(["Compétences","#/section/competences"]);if(SRC.a)o.push(["À propos","#/section/apropos"]);if(SRC.k)o.push(["Contact","#/contact"]);return o.slice(0,4)}
 /**
- * Point d'entrée du moteur : découpe le message en questions (SPL), répond à chacune avec seg()
+ * Moteur des questions classiques : découpe le message en questions (SPL), répond à chacune avec seg()
  * (sinon recherche dans le contenu, sinon « vouliez-vous dire »), puis assemble la réponse HTML.
+ * Les capacités avancées (offre, anglais, quiz, recherche) sont gérées par answer().
  */
-function answer(q){SRC={pj:{}};var parts=String(q).slice(0,500).split(SPL).map(function(x){return x&&x.trim()}).filter(function(x){return x&&nz(x)});
+function answer0(q){SRC={pj:{}};var parts=String(q).slice(0,500).split(SPL).map(function(x){return x&&x.trim()}).filter(function(x){return x&&nz(x)});
 if(!parts.length)return "Posez-moi une question sur le parcours, les expériences, les compétences ou les projets de Morade.";
 var res=parts.map(function(p){var h=seg(p);if(!h){var r=retr(nz(p));if(r)h="Je n'ai pas de réponse exacte, mais voici ce que je trouve dans le site :<br><br>"+r}return{p:p,h:h}}),ok=res.filter(function(r){return r.h});
-if(!ok.length){var dm=dym(nz(String(q)));return 'Je n\'ai pas trouvé de réponse à cette question dans le contenu du site. Essayez : <em>parcours</em>, <em>expériences</em>, <em>compétences</em>, ou un projet précis (par exemple « lait » ou « scoring »). Vous pouvez aussi écrire via le <a href="#/contact">formulaire</a>, ou taper « aide » pour voir mes possibilités.'+(dm.length?'<div class="qbs">Vouliez-vous dire :'+dm.map(function(w){return '<button type="button" class="qb" data-q="Parle-moi de '+hx(w)+'">'+hx(w)+'</button>'}).join("")+'</div>':"")}
+if(!ok.length){var dm=dym(nz(String(q))),closed=/^(est ce|a t il|sait il|connait il|maitrise t il|utilise t il|peut il|fait il|as tu|sais tu|connais tu|maitrises tu|utilises tu|fais tu)\b|\bdeja\b/.test(nz(String(q)));
+return (closed?"Je ne trouve aucune mention de cela sur le site, je ne peux donc pas le confirmer.":"Je n'ai pas trouvé de réponse à cette question dans le contenu du site. Essayez : <em>parcours</em>, <em>expériences</em>, <em>compétences</em>, ou un projet précis (par exemple « lait » ou « scoring »). Tapez « aide » pour voir mes possibilités.")+fillBtn(q)+(dm.length?'<div class="qbs">Vouliez-vous dire :'+dm.map(function(w){return '<button type="button" class="qb" data-q="Parle-moi de '+hx(w)+'">'+hx(w)+'</button>'}).join("")+'</div>':"")}
 if(res.length===1)return ok[0].h;
 var seen={};return res.filter(function(r){var k=r.h||r.p;if(seen[k])return false;seen[k]=1;return true}).map(function(r){return '<div class="qa"><em>« '+hx(cut(r.p))+' »</em><br>'+(r.h||"Je n'ai pas d'information à ce sujet sur le site.")+'</div>'}).join("")}
+/**
+ * Point d'entrée du moteur. Ordre : réponse de quiz, offre d'emploi collée, question en anglais (traduite),
+ * recherche libre (« cherche X »), puis moteur classique answer0(). Retourne du HTML.
+ */
+function answer(q){SRC={pj:{}};ACTS=[];var raw=String(q).slice(0,4000);
+if(/^__qz:/.test(raw))return quizAns(raw.slice(5));
+var nq0=nz(raw),en=isEN(nq0),pre=en?'<em class="ennote">The site is written in French, so I answer in French.</em><br>':"",h;
+if(isOffer(raw)){h=jobMatch(raw);if(h)return pre+h}
+if(en)raw=toFR(nq0);
+var ms=nz(raw).match(/^(?:cherche|recherche|search|trouve)\s+(?!t\s)(?:moi\s+)?(?:dans le site\s+)?(.{2,})$/);
+if(ms)return pre+searchAns(ms[1]);
+return pre+answer0(raw)}
 /**
  * Suggestions rapides adaptées au sujet courant (projet, compétence, expérience, ou menu général).
  * Retourne [[libellé, question], ...].
  */
 function sugg(){var t=CT.t;
+if(QZ.q)return[["Quitter le quiz","arrête le quiz"]];
 if(t==="p")return[["Objectif","Quel est l'objectif de ce projet ?"],["Organisation","Comment le travail était-il organisé ?"],["Acquis","Qu'a-t-il appris ?"],["Livrables","Quels sont les livrables ?"],["Autre projet","Montre-moi un autre projet"]];
 if(t==="s")return[["Projets associés","Dans quels projets ?"],["Compétences","Quelles sont ses compétences ?"],["Expériences","Quelles sont ses expériences ?"],["Résumé","Résume son profil"]];
 if(t==="e")return[["Détails","Plus de détails"],["Où et quand ?","Où et quand ?"],["Outils","Quels outils a-t-il utilisés ?"],["Autre expérience","Parle-moi de son autre expérience"],["Projets","Quels sont ses projets ?"]];
-return[["Parcours","Parle-moi de son parcours"],["Expériences","Quelles sont ses expériences ?"],["Compétences","Quelles sont ses compétences ?"],["Projets","Quels sont ses projets ?"],["Résumé","Résume son profil"],["Contact","Comment le contacter ?"]]}
+return[["Parcours","Parle-moi de son parcours"],["Expériences","Quelles sont ses expériences ?"],["Compétences","Quelles sont ses compétences ?"],["Projets","Quels sont ses projets ?"],["Résumé","Résume son profil"],["Quiz","quiz"],["Graphique","graphique des technologies"],["Frise","frise chronologique"],["Contact","Comment le contacter ?"]]}
 /*AI-END*/
 /* ============================================================
    7. ASSISTANT - INTERFACE
@@ -1292,7 +1451,7 @@ function ico(n){return '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden
 /**
  * Commandes accessibles en tapant « / » : [commande, description, question envoyée].
  */
-var CMDS=[["/parcours","Parler du parcours","Parle-moi de son parcours"],["/experiences","Voir les expériences","Quelles sont ses expériences ?"],["/competences","Lister les compétences","Quelles sont ses compétences ?"],["/projets","Voir les projets","Quels sont ses projets ?"],["/resume","Résumer le profil","Résume son profil"],["/contact","Contacter Morade","Comment le contacter ?"],["/aide","Voir mes possibilités","aide"],["/nouveau","Nouvelle conversation","__new"]];
+var CMDS=[["/parcours","Parler du parcours","Parle-moi de son parcours"],["/experiences","Voir les expériences","Quelles sont ses expériences ?"],["/competences","Lister les compétences","Quelles sont ses compétences ?"],["/projets","Voir les projets","Quels sont ses projets ?"],["/resume","Résumer le profil","Résume son profil"],["/quiz","Jouer au quiz","quiz"],["/graphique","Voir un graphique","graphique des technologies"],["/frise","Frise chronologique","frise chronologique"],["/pitch","Pitch à copier","pitch"],["/message","Rédiger un message","écris un message pour le contacter"],["/offre","Analyser une offre d'emploi","__ins:Voici une offre d'emploi à comparer : "],["/cherche","Chercher dans le site","__ins:cherche "],["/contact","Contacter Morade","Comment le contacter ?"],["/aide","Voir mes possibilités","aide"],["/nouveau","Nouvelle conversation","__new"]];
 /**
  * Questions proposées pendant la saisie (construites par qsl()).
  */
@@ -1301,7 +1460,7 @@ var QS=null;
  * Construit une seule fois la liste des questions suggérées : questions générales, une par projet,
  * une par compétence.
  */
-function qsl(){if(QS)return QS;QS=["Parle-moi de son parcours","Quelles sont ses expériences ?","Quelles sont ses compétences ?","Quels sont ses projets ?","Résume son profil","Quels sont ses points forts ?","Comment le contacter ?","Compare R et Python","Projets de BUT 1","Projets de BUT 2","Quelles sont ses études ?","Où a-t-il fait son stage ?","Combien de projets a-t-il réalisés ?"];
+function qsl(){if(QS)return QS;QS=["Parle-moi de son parcours","Quelles sont ses expériences ?","Quelles sont ses compétences ?","Quels sont ses projets ?","Résume son profil","Quels sont ses points forts ?","Comment le contacter ?","Compare R et Python","Projets de BUT 1","Projets de BUT 2","Quelles sont ses études ?","Où a-t-il fait son stage ?","Combien de projets a-t-il réalisés ?","Fais-moi un quiz sur Morade","Graphique des technologies","Frise chronologique","Écris un message pour le contacter","Pitch de 30 secondes","Passe en mode sombre","Ouvre la page du projet scoring","Quelles sont les technologies les plus utilisées ?"];
 P.forEach(function(p){var t=p[1].replace(/\s*\(.*\)/,"");QS.push("Parle-moi du projet "+t);QS.push("Quel est l'objectif du projet "+t+" ?")});
 SK.forEach(function(c){c[1].forEach(function(x){QS.push("Que fait-il avec "+x.split("|")[0].replace(/\s*\(.*\)/,"")+" ?")})});return QS}
 /**
@@ -1349,7 +1508,7 @@ function ld(k){try{return JSON.parse(SS.getItem(k))}catch(e){return null}}
 function sv(k,v){try{SS.setItem(k,JSON.stringify(v))}catch(e){}}
 // Construction du DOM de l'assistant : bouton flottant, bulle d'invitation, panneau (en-tête,
 // messages, suggestions, saisie).
-document.body.insertAdjacentHTML("beforeend",'<button id="ai" type="button" aria-label="Ouvrir l\'assistant (Ctrl+K)" aria-expanded="false" aria-controls="aip">'+ico("sparkle")+'<i class="pls" aria-hidden="true"></i></button><div id="aitip" role="status" hidden><button type="button" id="aitt">Une question sur le parcours de Morade ?</button><button type="button" id="aitx" aria-label="Fermer la bulle">'+ico("close")+'</button></div><div id="aip" role="dialog" aria-label="Assistant du portfolio" hidden><div class="ah"><div class="avai">'+ico("sparkle")+'</div><div class="aht"><strong>Assistant de Morade</strong><small><i class="onl"></i>En ligne · répond d\'après le site</small></div><div class="ahb"><button type="button" id="aiN" title="Nouvelle conversation" aria-label="Nouvelle conversation">'+ico("refresh")+'</button><button type="button" id="aiE" title="Agrandir" aria-label="Agrandir" aria-pressed="false">'+ico("expand")+'</button><button type="button" id="aix" title="Fermer" aria-label="Fermer">'+ico("close")+'</button></div></div><div id="am" role="log" aria-live="polite"></div><div id="ach"></div><div id="asug" role="listbox" hidden></div><form id="af"><textarea id="aq" rows="1" placeholder="Posez une ou plusieurs questions…" maxlength="400" aria-label="Votre question"></textarea><button type="button" id="aiM" aria-label="Dicter votre question" hidden>'+ico("mic")+'</button><button type="submit" id="aiS" aria-label="Envoyer" disabled>'+ico("send")+'</button></form><p class="aif">Assistant local : il répond uniquement d\'après le contenu du site et n\'envoie aucune donnée. Astuce : tapez / pour les commandes.</p></div>');
+document.body.insertAdjacentHTML("beforeend",'<button id="ai" type="button" aria-label="Ouvrir l\'assistant (Ctrl+K)" aria-expanded="false" aria-controls="aip">'+ico("sparkle")+'<i class="pls" aria-hidden="true"></i></button><div id="aitip" role="status" hidden><button type="button" id="aitt">Une question sur le parcours de Morade ?</button><button type="button" id="aitx" aria-label="Fermer la bulle">'+ico("close")+'</button></div><div id="aip" role="dialog" aria-label="Assistant du portfolio" hidden><div class="ah"><div class="avai">'+ico("sparkle")+'</div><div class="aht"><strong>Assistant de Morade</strong><small><i class="onl"></i>En ligne · répond d\'après le site</small></div><div class="ahb"><button type="button" id="aiD" title="Exporter la conversation" aria-label="Exporter la conversation">'+ico("download")+'</button><button type="button" id="aiN" title="Nouvelle conversation" aria-label="Nouvelle conversation">'+ico("refresh")+'</button><button type="button" id="aiE" title="Agrandir" aria-label="Agrandir" aria-pressed="false">'+ico("expand")+'</button><button type="button" id="aix" title="Fermer" aria-label="Fermer">'+ico("close")+'</button></div></div><div id="am" role="log" aria-live="polite"></div><div id="ach"></div><div id="asug" role="listbox" hidden></div><form id="af"><textarea id="aq" rows="1" placeholder="Posez une ou plusieurs questions…" maxlength="4000" aria-label="Votre question"></textarea><button type="button" id="aiM" aria-label="Dicter votre question" hidden>'+ico("mic")+'</button><button type="submit" id="aiS" aria-label="Envoyer" disabled>'+ico("send")+'</button></form><p class="aif">Assistant local : il répond uniquement d\'après le contenu du site et n\'envoie aucune donnée. Astuce : tapez / pour les commandes.</p></div>');
 // Raccourci pour document.getElementById.
 function $(i){return document.getElementById(i)}
 var b=$("ai"),p=$("aip"),m=$("am"),f=$("af"),qi=$("aq"),ch=$("ach"),tp=$("aitip"),mic=$("aiM"),asug=$("asug"),busy=false,hist=[],uh=[],hi=-1,started=false,act=-1,cur=[];
@@ -1362,7 +1521,7 @@ function srcH(s){return s&&s.length?'<div class="srcs"><span>Voir sur le site :<
  * sources. Retourne l'élément créé.
  */
 function bub(c,h,s){var d=document.createElement("div");d.className="msg "+c;
-if(c==="b"){d.innerHTML='<div class="mav">'+ico("sparkle")+'</div><div class="bub">'+h+srcH(s)+'</div><button type="button" class="cp" title="Copier la réponse" aria-label="Copier la réponse">'+ico("copy")+'</button>';fixImgs(d)}
+if(c==="b"){d.innerHTML='<div class="mav">'+ico("sparkle")+'</div><div class="bub">'+h+srcH(s)+'</div><button type="button" class="cp" title="Copier la réponse" aria-label="Copier la réponse">'+ico("copy")+'</button>'+(window.speechSynthesis?'<button type="button" class="cp rd" title="Écouter la réponse" aria-label="Écouter la réponse">'+ico("volume")+'</button>':"");fixImgs(d)}
 else d.innerHTML='<div class="bub">'+h+'</div>';
 m.appendChild(d);m.scrollTop=m.scrollHeight;return d}
 /**
@@ -1402,15 +1561,15 @@ function reset(){m.innerHTML="";hist=[];uh=[];CT={t:null,id:null,i:null,l:null};
  * Envoie une question : affiche le message, l'état de réflexion, calcule la réponse (answer),
  * l'affiche avec l'effet de frappe puis ajoute les sources et de nouvelles suggestions.
  */
-function ask(t){t=String(t).trim();if(!t||busy)return;
+function ask(t,label){t=String(t).trim();if(!t||busy)return;
 if(t==="__new"){reset();return}
-busy=true;hideSug();ch.innerHTML="";bub("u",hx(t));hist.push({c:"u",h:hx(t)});uh.push(t);hi=-1;
+busy=true;hideSug();ch.innerHTML="";var lb=label||t;bub("u",hx(lb));hist.push({c:"u",h:hx(lb)});if(!/^__qz:/.test(t))uh.push(lb);hi=-1;
 var d=bub("b",'<span class="dots"><span></span><span></span><span></span></span><small class="stt">Je cherche dans le site…</small>'),bb=d.querySelector(".bub"),r,s;
 var st=setTimeout(function(){var x=bb.querySelector(".stt");if(x)x.textContent="Je rédige la réponse…"},450);
 try{r=answer(t);s=srcLinks()}catch(e){r="Une erreur est survenue ; reformulez votre question, s'il vous plaît.";s=[]}
 setTimeout(function(){clearTimeout(st);bb.innerHTML=r;fixImgs(bb);d.classList.add("in");m.setAttribute("aria-busy","true");
 m.scrollTop+=d.getBoundingClientRect().top-m.getBoundingClientRect().top-10;
-typeIn(bb,function(){m.setAttribute("aria-busy","false");bb.insertAdjacentHTML("beforeend",srcH(s));hist.push({c:"b",h:r,s:s});if(hist.length>40)hist=hist.slice(-40);save();chips(sugg());busy=false})},Math.min(250+r.length/6,700))}
+typeIn(bb,function(){m.setAttribute("aria-busy","false");bb.insertAdjacentHTML("beforeend",srcH(s));hist.push({c:"b",h:r,s:s});if(hist.length>40)hist=hist.slice(-40);save();chips(sugg());busy=false;runActs()})},Math.min(250+r.length/6,700))}
 /**
  * Ouvre (true) ou ferme (false) le panneau.
  */
@@ -1430,12 +1589,23 @@ hideSug();ch.style.display=""}
 /**
  * Envoie le contenu du champ de saisie.
  */
-function send(){var t=qi.value;qi.value="";auto();$("aiS").disabled=true;hideSug();ch.style.display="";ask(t)}
+function send(){var t=qi.value,cm=CMDS.filter(function(c){return c[0]===t.trim().toLowerCase()})[0];qi.value="";auto();$("aiS").disabled=true;hideSug();ch.style.display="";if(cm){if(cm[2].indexOf("__ins:")===0){qi.value=cm[2].slice(6);$("aiS").disabled=!qi.value.trim();qi.focus();return}ask(cm[2]);return}ask(t)}
 /**
  * Choisit la suggestion n° i.
  */
-function pick(i){var x=cur[i];if(!x)return;qi.value="";auto();$("aiS").disabled=true;hideSug();ch.style.display="";ask(x[2])}
+function pick(i){var x=cur[i];if(!x)return;if(String(x[2]).indexOf("__ins:")===0){qi.value=x[2].slice(6);hideSug();ch.style.display="";auto();$("aiS").disabled=!qi.value.trim();qi.focus();return}qi.value="";auto();$("aiS").disabled=true;hideSug();ch.style.display="";ask(x[2])}
+// Actions demandées par l'assistant (ACTS) : thème, remontée de page, navigation.
+function runActs(){var a=ACTS;ACTS=[];a.forEach(function(x){if(x.t==="theme"){document.documentElement.setAttribute("data-theme",x.m);try{localStorage.setItem("th",x.m)}catch(e){}}else if(x.t==="top"){window.scrollTo({top:0,behavior:"smooth"})}else if(x.t==="go"){setTimeout(function(){if(location.hash===x.h)route();else location.hash=x.h;if(window.innerWidth<700)toggle(false)},350)}})}
+// Pré-remplit le champ « Message » du formulaire de contact, puis y emmène l'utilisateur.
+function fillForm(t){function put(){var c=document.getElementById("cm");if(c){c.value=t;goContact();setTimeout(function(){c.focus({preventScroll:true})},700)}}if(document.getElementById("cm"))put();else{location.hash="#/contact";setTimeout(put,600)}if(window.innerWidth<700)toggle(false)}
+// Copie un texte dans le presse-papiers et confirme sur le bouton.
+function copyText(t,btn){try{navigator.clipboard.writeText(t);if(btn){var o=btn.textContent;btn.textContent="Copié";setTimeout(function(){btn.textContent=o},1400)}}catch(e){}}
+// Lecture à voix haute d'une réponse (synthèse vocale du navigateur) ; un second clic l'arrête.
+function speak(btn){var ss=window.speechSynthesis;if(!ss)return;var on=btn.classList.contains("on");ss.cancel();m.querySelectorAll(".rd.on").forEach(function(x){x.classList.remove("on")});if(on)return;var t=btn.parentNode.querySelector(".bub"),x=(t.innerText||t.textContent||"").replace(/Voir sur le site :.*$/s,"").trim(),u=new SpeechSynthesisUtterance(x);u.lang="fr-FR";u.onend=u.onerror=function(){btn.classList.remove("on")};btn.classList.add("on");ss.speak(u)}
+// Export de la conversation en fichier texte.
+function exportConv(){var t=hist.map(function(x){var d=document.createElement("div");d.innerHTML=x.h;return(x.c==="u"?"Vous : ":"Assistant : ")+(d.innerText||d.textContent||"").replace(/\n{3,}/g,"\n\n").trim()}).join("\n\n");var bl=new Blob([t],{type:"text/plain;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(bl);a.download="conversation-assistant.txt";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)}
 b.addEventListener("click",function(){toggle(p.hidden)});
+$("aiD").addEventListener("click",exportConv);
 $("aix").addEventListener("click",function(){toggle(false);b.focus()});
 /**
  * Active ou désactive le mode agrandi (mémorisé pour la session).
@@ -1462,7 +1632,10 @@ if(e.key==="Enter"&&!e.shiftKey&&!e.isComposing){e.preventDefault();if(open&&act
 if(e.key==="ArrowUp"&&!qi.value&&uh.length){e.preventDefault();hi=Math.max(0,(hi<0?uh.length:hi)-1);qi.value=uh[hi];onInput()}});
 asug.addEventListener("click",function(e){var x=e.target.closest("button");if(x)pick(+x.getAttribute("data-i"))});
 ch.addEventListener("click",function(e){var c=e.target.closest("button");if(c)ask(c.getAttribute("data-q"))});
-m.addEventListener("click",function(e){var q=e.target.closest(".qb");if(q){ask(q.getAttribute("data-q"));return}
+m.addEventListener("click",function(e){var q=e.target.closest(".qb");if(q){ask(q.getAttribute("data-q"),q.getAttribute("data-l"));return}
+var qf=e.target.closest(".qf");if(qf){fillForm(qf.getAttribute("data-t"));return}
+var qc=e.target.closest(".qcp");if(qc){copyText(qc.getAttribute("data-t"),qc);return}
+var rd=e.target.closest(".rd");if(rd){speak(rd);return}
 var c=e.target.closest(".cp");if(c){var t=c.parentNode.querySelector(".bub");var x=(t.innerText||t.textContent||"").replace(/Voir sur le site :.*$/s,"").trim();try{navigator.clipboard.writeText(x);c.title="Copié";c.classList.add("ok");setTimeout(function(){c.title="Copier la réponse";c.classList.remove("ok")},1400)}catch(er){}return}
 if(e.target.closest("a")&&window.innerWidth<700)toggle(false)});
 // Tout élément portant l'attribut data-ai ouvre l'assistant (et pose la question indiquée).
