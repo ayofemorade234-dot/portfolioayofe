@@ -481,7 +481,7 @@ header.scrolled{box-shadow:0 8px 28px var(--sh)}
 <!-- Contenu : rempli par route() selon l'adresse -->
 <main class="w" id="app"></main>
 <!-- Pied de page -->
-<footer><div class="w ft"><span>© 2026 Morade OSENI · BUT Science des Données, IUT Grand Ouest Normandie</span><a href="#/">Retour en haut <svg class="" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill="currentColor" d="M13 20h-2V8l-5.5 5.5l-1.42-1.42L12 4.16l7.92 7.92l-1.42 1.42L13 8z"/></svg></a></div></footer>
+<footer><div class="w ft"><span>© 2026 Morade OSENI · BUT Science des Données, IUT Grand Ouest Normandie<span id="gcn"></span></span><a href="#/">Retour en haut <svg class="" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill="currentColor" d="M13 20h-2V8l-5.5 5.5l-1.42-1.42L12 4.16l7.92 7.92l-1.42 1.42L13 8z"/></svg></a></div></footer>
 
 <script>
 /* ================================================================
@@ -493,7 +493,7 @@ header.scrolled{box-shadow:0 8px 28px var(--sh)}
     5. Pages                 : accueil, liste, détail, animations de page
     6. Assistant - moteur    : compréhension du texte et construction des réponses
     7. Assistant - interface : panneau, saisie, suggestions, effet de frappe
-    8. Navigation            : route(), thème, menu, progression de lecture
+    8. Navigation            : route(), thème, menu, progression de lecture, statistiques GoatCounter
     9. Interactions          : filtres, images de secours, formulaire, inclinaison des cartes
    Principe général : tout est rendu par JavaScript dans l'élément #app selon
    l'adresse (#/ accueil, #/projets, #/projet/ID, #/section/ID, #/contact).
@@ -509,6 +509,8 @@ header.scrolled{box-shadow:0 8px 28px var(--sh)}
  * jamais dans la page : elle est enregistrée dans le compte Formspree.
  */
 var FORM_ENDPOINT="https://formspree.io/f/xzedegvl";
+/** Code de ton site GoatCounter (ex. « monsite » pour monsite.goatcounter.com) ou adresse complète …/count. Laisser VOTRE_CODE désactive les statistiques. */
+var GC_CODE="moradeoseni";
 // Indique au CSS que JavaScript est actif : les blocs .rv ne sont masqués (avant leur animation) que
 // dans ce cas.
 document.documentElement.classList.add("js");
@@ -1276,6 +1278,8 @@ function toFR(nq){var p=nq;ENP.forEach(function(r){p=p.replace(r[0],r[1])});retu
 function searchAns(term){var r=retr(nz(term),null,4);return r?"<strong>Résultats pour « "+hx(term)+" »</strong><br><br>"+r:"Aucun passage du site ne correspond à « "+hx(term)+" »."}
 /** Réponse honnête pour une technologie absente du site (u : mot reconnu) avec le domaine le plus proche. */
 function unkAns(u){return "Je ne vois pas « "+hx(u)+" » parmi les compétences listées sur le site. Les plus proches : "+(/learn|machine|deep|intelligence|apprentissage|data science/.test(u)?"modèle linéaire, méthodes de clustering et méthodes factorielles (analyse statistique).":catAns(UNKC[u]===undefined?0:UNKC[u]))+" Vous pouvez demander la liste complète : « Quelles sont ses compétences ? »"}
+/** Réponse aux questions sur les cookies, les statistiques et les données personnelles (dépend de l'activation de GoatCounter). */
+function privAns(){SRC.k=1;return (GC.on?"Ce site mesure son audience avec <strong>GoatCounter</strong> : statistiques anonymes (pages consultées, pays, type d'appareil), sans cookies, et désactivées si votre navigateur envoie « Ne pas suivre ». ":"Ce site ne mesure pas son audience et n'utilise pas de cookies. ")+"L'assistant fonctionne dans votre navigateur : vos questions ne sont pas envoyées"+(GC.on?" (seul le nombre d'utilisations est compté)":"")+". Le site mémorise seulement votre choix de thème et l'historique de la conversation dans votre navigateur. Le formulaire de contact est traité par Formspree."}
 /**
  * Répond à UNE question (un segment) : retourne du HTML, ou null si rien n'est compris. Voir les
  * étapes numérotées ci-dessous.
@@ -1298,6 +1302,7 @@ if(at(/\b(es tu|etes vous|tu es|vous etes) (une? |un )?(ia|intelligence|robot|bo
 // ÉTAPE 1b - Capacités avancées : actions sur le site, quiz, textes prêts à copier, frise, graphiques.
 var pj0=fProj(nq,[]),act=actAns(nq,pj0);if(act)return act;
 if(QZ.q&&at(/\b(arrete\w*|stop|quitte\w*|abandonne\w*)\b/)>=0&&/\b(quiz|jeu)\b/.test(nq)){var sc0=QZ.s,n0=QZ.n;QZ.q=null;return "Quiz arrêté ("+sc0+" bonne(s) réponse(s) sur "+n0+")."}
+if(at(/\b(cookies?|rgpd|vie privee|confidentialite|tracking|analytics|goatcounter)\b|\bstatistiques? de visites?\b|\bdonnees personnelles\b|\bsuivi des visites\b/)>=0)return privAns();
 if(at(/\b(quiz|quizz|teste moi|testez moi)\b/)>=0)return quizAns("start");
 if(at(/\b(pitch|elevator)\b/)>=0)return pitchFirst();
 if(at(/\b(bio|biographie|presentation courte|description courte|accroche)\b/)>=0)return bioAns();
@@ -1561,7 +1566,7 @@ function reset(){m.innerHTML="";hist=[];uh=[];CT={t:null,id:null,i:null,l:null};
  * Envoie une question : affiche le message, l'état de réflexion, calcule la réponse (answer),
  * l'affiche avec l'effet de frappe puis ajoute les sources et de nouvelles suggestions.
  */
-function ask(t,label){t=String(t).trim();if(!t||busy)return;
+function ask(t,label){t=String(t).trim();if(!t||busy)return;trk("assistant-question",null,true);
 if(t==="__new"){reset();return}
 busy=true;hideSug();ch.innerHTML="";var lb=label||t;bub("u",hx(lb));hist.push({c:"u",h:hx(lb)});if(!/^__qz:/.test(t))uh.push(lb);hi=-1;
 var d=bub("b",'<span class="dots"><span></span><span></span><span></span></span><small class="stt">Je cherche dans le site…</small>'),bb=d.querySelector(".bub"),r,s;
@@ -1573,7 +1578,7 @@ typeIn(bb,function(){m.setAttribute("aria-busy","false");bb.insertAdjacentHTML("
 /**
  * Ouvre (true) ou ferme (false) le panneau.
  */
-function toggle(o){p.hidden=!o;b.setAttribute("aria-expanded",String(o));b.classList.toggle("open",o);tp.hidden=true;if(o){if(!started)start();setTimeout(function(){qi.focus()},50)}}
+function toggle(o){if(o&&p.hidden)trk("assistant-ouvert",null,true);p.hidden=!o;b.setAttribute("aria-expanded",String(o));b.classList.toggle("open",o);tp.hidden=true;if(o){if(!started)start();setTimeout(function(){qi.focus()},50)}}
 /**
  * Ajuste la hauteur du champ de saisie (110 px au plus).
  */
@@ -1671,6 +1676,7 @@ var key=(r[0]==="projets"||r[0]==="projet")?"projets":"home";
 app.innerHTML=r[0]==="projets"?list():r[0]==="projet"?detail(r[1]):home();
 app.classList.remove("pg-in");void app.offsetWidth;app.classList.add("pg-in");
 afterRender(key);
+trk("/"+r.join("/"),document.title);
 if(r[0]==="contact"){goContact()}else if(r[0]==="section"){goSec(r[1])}else window.scrollTo(0,0);
 }
 // Restaure le thème clair ou sombre choisi précédemment (localStorage).
@@ -1700,6 +1706,29 @@ var tick=false;
 function onScroll(){if(tick)return;tick=true;requestAnimationFrame(function(){var h=document.documentElement,mx=h.scrollHeight-h.clientHeight;prog.style.transform="scaleX("+(mx>0?Math.min(1,window.scrollY/mx):0)+")";var hd=document.querySelector("header");if(hd)hd.classList.toggle("scrolled",window.scrollY>8);tick=false})}
 window.addEventListener("scroll",onScroll,{passive:true});onScroll();
 // DÉMARRAGE : écoute les changements d'adresse (#/...) et affiche la page courante.
+/* ---------- Statistiques de visite anonymes (GoatCounter) ---------- */
+/**
+ * GC : état du suivi. on = actif, ready = script GoatCounter chargé, q = envois en attente de chargement.
+ * Le suivi n'est actif que si GC_CODE est renseigné, si le navigateur n'envoie pas « Ne pas suivre »
+ * et si le site est servi en ligne (ni fichier local, ni localhost).
+ */
+var GC={on:false,ready:false,q:[]};
+/** Charge le script GoatCounter (sans envoi automatique : le site change de « page » sans recharger) et affiche la mention dans le pied de page. */
+function gcInit(){
+if(GC_CODE.indexOf("VOTRE_CODE")>-1)return;
+if(navigator.doNotTrack==="1"||window.doNotTrack==="1")return;
+if(!/^https?:$/.test(location.protocol)||/^(localhost|127\.0\.0\.1)$/.test(location.hostname))return;
+GC.on=true;window.goatcounter={no_onload:true};
+var ep=/^https?:/.test(GC_CODE)?GC_CODE:"https://"+GC_CODE+".goatcounter.com/count",s=document.createElement("script");
+s.async=true;s.src="https://gc.zgo.at/count.js";s.setAttribute("data-goatcounter",ep);s.setAttribute("data-goatcounter-settings",'{"no_onload":true}');
+s.onload=function(){GC.ready=true;GC.q.forEach(function(v){window.goatcounter.count(v)});GC.q=[]};
+document.head.appendChild(s);
+var n=document.getElementById("gcn");if(n)n.textContent=" · Statistiques de visite anonymes (GoatCounter), sans cookies."}
+/** Compte une page vue (ev faux) ou un événement (ev vrai : path = nom de l'événement). Aucune donnée personnelle n'est envoyée. */
+function trk(path,title,ev){if(!GC.on)return;var v={path:path,title:title||document.title,event:!!ev};if(GC.ready&&window.goatcounter&&window.goatcounter.count)window.goatcounter.count(v);else GC.q.push(v)}
+// Événements : clic sur LinkedIn et ouverture d'un livrable (liens externes).
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href^="http"]');if(!a||!GC.on)return;var h=a.getAttribute("href");if(/linkedin\.com/.test(h))trk("clic-linkedin",null,true);else if(a.closest(".pb")||a.closest(".lk"))trk("livrable-ouvert",null,true)});
+gcInit();
 window.addEventListener("hashchange",route);route();
 /* ============================================================
    9. INTERACTIONS DES PAGES
@@ -1723,7 +1752,7 @@ if(d._gotcha)return;
 if(!f.checkValidity()){f.reportValidity();return}
 btn.disabled=true;st.textContent="Envoi en cours…";
 fetch(FORM_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(d)})
-.then(function(r){if(r.status===429){throw "rate"}if(!r.ok){throw "err"}f.reset();st.textContent="Merci ! Votre message a bien été envoyé."})
+.then(function(r){if(r.status===429){throw "rate"}if(!r.ok){throw "err"}f.reset();trk("formulaire-envoye",null,true);st.textContent="Merci ! Votre message a bien été envoyé."})
 .catch(function(x){st.textContent=x==="rate"?"Trop de messages envoyés, merci de réessayer dans quelques instants.":"Une erreur est survenue. Veuillez réessayer plus tard."})
 .then(function(){btn.disabled=false});
 });
