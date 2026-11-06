@@ -1824,7 +1824,7 @@ var n=document.getElementById("gcn");if(n)n.textContent=" · Statistiques de vis
 function trk(path,title,ev){if(!GC.on)return;var v={path:path,title:title||document.title,event:!!ev};if(GC.ready&&window.goatcounter&&window.goatcounter.count)window.goatcounter.count(v);else GC.q.push(v)}
 // Événements : clic sur LinkedIn et ouverture d'un livrable (liens externes).
 document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href^="http"]');if(!a||!GC.on)return;var h=a.getAttribute("href");if(/linkedin\.com/.test(h))trk("clic-linkedin",null,true);else if(a.closest(".pb")||a.closest(".lk"))trk("livrable-ouvert",null,true)});
-/* Analytics disabled in this private review version. */
+gcInit(); // Active GoatCounter sur le site hébergé, hors navigation « Ne pas suivre ».
 /* Visitor experience: self-contained, accessible and without additional dependencies. */
 var projectQuery='',projectYear='Tous',projectTool='Tous';
 function escapeHTML(v){return String(v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
